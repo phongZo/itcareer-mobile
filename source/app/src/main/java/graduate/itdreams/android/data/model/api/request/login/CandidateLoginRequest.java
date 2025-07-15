@@ -6,5 +6,5 @@ import lombok.Data;
 public class CandidateLoginRequest {
     private String email;
     private String password;
-    private String grant_type = "user";
+    private String grant_type = "student";
 }

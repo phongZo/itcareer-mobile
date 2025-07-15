@@ -28,8 +28,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingBottom="24dp"
-                android:onClick="hideKeyboard">
+                android:paddingBottom="24dp">
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package graduate.itdreams.android.ui.main.register;
 import androidx.lifecycle.MutableLiveData;
 
 import graduate.itdreams.android.MVVMApplication;
+import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.Repository;
 import graduate.itdreams.android.data.model.api.request.student.ResetOtpRequest;
 import graduate.itdreams.android.data.model.api.request.student.VerifyOtpRequest;
@@ -48,6 +49,7 @@ public class VerifyOTPViewModel extends BaseFragmentViewModel {
                         response -> {
                             hideLoading();
                             isSuccess.setValue(true);
+                            showNormalMessage("Đăng ký tài khoản thành công");
                         }, throwable -> {
                             hideLoading();
                             isSuccess.setValue(false);

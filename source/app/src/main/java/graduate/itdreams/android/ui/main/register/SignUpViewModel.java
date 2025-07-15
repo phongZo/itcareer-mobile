@@ -58,6 +58,7 @@ public class SignUpViewModel extends BaseFragmentViewModel {
                             String hash = response.getData().getIdHash();
                             idHash.setValue(hash);
                             isSuccess.setValue(true);
+                            showNormalMessage(context.getString(R.string.signup_success));
                         }, throwable -> {
                             hideLoading();
                             isSuccess.setValue(false);

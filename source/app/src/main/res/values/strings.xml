@@ -33,6 +33,7 @@
     <string name="update_success">Cập nhật thông tin thành công</string>
     <string name="update_un_success">Cập nhật thông tin thất bại</string>
 
+    <string name="login_success">Đăng nhập thành công</string>
     <string name="login_un_success">Số điện thoại hoặc mật khẩu không đúng</string>
     <string name="edit">Sửa</string>
     <string name="no_update">Chưa cập nhật</string>

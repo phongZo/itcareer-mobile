@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -138,9 +139,9 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
         viewModel.signUpCandidate(request, requireContext());
         viewModel.isSuccess.observe(getViewLifecycleOwner(), success -> {
             if (Boolean.TRUE.equals(success)) {
+                Toast.makeText(requireContext(), R.string.signup_success, Toast.LENGTH_SHORT).show();
                 String idHash = viewModel.idHash.getValue();
-                goToOtpFragment(idHash);
-            }
+                goToOtpFragment(idHash);            }
         });
 
     }

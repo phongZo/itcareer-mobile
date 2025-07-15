@@ -1,11 +1,14 @@
 package graduate.itdreams.android.ui.main.login;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -96,6 +99,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         viewModel.candidateLogin(request);
         viewModel.loginSuccess.observe(this, success -> {
             if (Boolean.TRUE.equals(success)) {
+                Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }

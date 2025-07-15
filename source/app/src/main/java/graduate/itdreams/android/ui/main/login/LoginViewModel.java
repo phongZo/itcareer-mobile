@@ -44,6 +44,7 @@ public class LoginViewModel extends BaseViewModel {
                             repository.getSharedPreferences().setToken(response.getAccess_token());
                             repository.getSharedPreferences().saveAccessTokenObject(response);
                             loginSuccess.setValue(true);
+                            showNormalMessage(getApplication().getString(R.string.login_success));
 
                         }, throwable -> {
                             hideLoading();
