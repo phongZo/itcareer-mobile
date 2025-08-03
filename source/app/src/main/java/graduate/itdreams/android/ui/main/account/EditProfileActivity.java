@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
-import graduate.itdreams.android.data.model.api.request.user.UpdateUserRequest;
+import graduate.itdreams.android.data.model.api.request.student.StudentUpdateProfileRequest;
 import graduate.itdreams.android.databinding.ActivityEditProfileBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
@@ -34,8 +34,8 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
         String fullname = viewBinding.name.getText().toString().trim();
         String email = viewBinding.email.getText().toString().trim();
         String username = viewBinding.username.getText().toString().trim();
-        UpdateUserRequest request = new UpdateUserRequest();
-        request.setFullname(fullname);
+        StudentUpdateProfileRequest request = new StudentUpdateProfileRequest();
+        request.setFullName(fullname);
         request.setEmail(email);
         request.setUsername(username);
         if (selectedBirthDate != null) {

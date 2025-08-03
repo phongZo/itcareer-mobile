@@ -15,6 +15,8 @@
     <color name="bg_logo">#1A483F</color>
     <color name="bg_btn">#429E9D</color>
     <color name="bg_app">#FFFFFFFF</color>
+    <color name="bg_task">#108986</color>
+
     <color name="stroke_avatar">#3979DB</color>
     <color name="text_black">#FF000000</color>
     <color name="bg_second">#F4F5F5</color>
@@ -28,5 +30,8 @@
     <color name="line">#F5F5F5</color>
     <color name="line_app">#C1EBEA</color>
     <color name="gray">#959595</color>
+    <color name="text_gray">#6F6E6E</color>
+    <color name="text_green">#0C6F30</color>
+    <color name="star">#FFC107</color>
 
 </resources>

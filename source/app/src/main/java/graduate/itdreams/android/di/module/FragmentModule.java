@@ -17,13 +17,15 @@ import dagger.Module;
 import dagger.Provides;
 import graduate.itdreams.android.ui.main.account.AccountUnLoginViewModel;
 import graduate.itdreams.android.ui.main.account.AccountViewModel;
-import graduate.itdreams.android.ui.main.comment.TopCommentViewModel;
-import graduate.itdreams.android.ui.main.cv.CvProfileViewModel;
 import graduate.itdreams.android.ui.main.home.HomeViewModel;
 import graduate.itdreams.android.ui.main.register.QuizJobViewModel;
 import graduate.itdreams.android.ui.main.register.SignUpViewModel;
 import graduate.itdreams.android.ui.main.notification.NotificationViewModel;
 import graduate.itdreams.android.ui.main.register.VerifyOTPViewModel;
+import graduate.itdreams.android.ui.main.simulation.overview.OverviewViewModel;
+import graduate.itdreams.android.ui.main.simulation.rate.RateViewModel;
+import graduate.itdreams.android.ui.main.simulation.task.TaskViewModel;
+import graduate.itdreams.android.ui.main.taskdetail.SubTaskViewModel;
 
 @Module
 public class FragmentModule {
@@ -50,26 +52,10 @@ public class FragmentModule {
 
     @Provides
     @FragmentScope
-    CvProfileViewModel provideCvProfileViewModel(Repository repository, Context application) {
-        Supplier<CvProfileViewModel> supplier = () -> new CvProfileViewModel(repository, (MVVMApplication)application);
-        ViewModelProviderFactory<CvProfileViewModel> factory = new ViewModelProviderFactory<>(CvProfileViewModel.class, supplier);
-        return new ViewModelProvider(fragment, factory).get(CvProfileViewModel.class);
-    }
-
-    @Provides
-    @FragmentScope
     NotificationViewModel provideNotificationViewModel(Repository repository, Context application) {
         Supplier<NotificationViewModel> supplier = () -> new NotificationViewModel(repository, (MVVMApplication)application);
         ViewModelProviderFactory<NotificationViewModel> factory = new ViewModelProviderFactory<>(NotificationViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(NotificationViewModel.class);
-    }
-
-    @Provides
-    @FragmentScope
-    TopCommentViewModel provideTopCommentViewModel(Repository repository, Context application) {
-        Supplier<TopCommentViewModel> supplier = () -> new TopCommentViewModel(repository, (MVVMApplication)application);
-        ViewModelProviderFactory<TopCommentViewModel> factory = new ViewModelProviderFactory<>(TopCommentViewModel.class, supplier);
-        return new ViewModelProvider(fragment, factory).get(TopCommentViewModel.class);
     }
 
     @Provides
@@ -110,6 +96,37 @@ public class FragmentModule {
         Supplier<QuizJobViewModel> supplier = () -> new QuizJobViewModel(repository, (MVVMApplication)application);
         ViewModelProviderFactory<QuizJobViewModel> factory = new ViewModelProviderFactory<>(QuizJobViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(QuizJobViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    OverviewViewModel provideOverviewViewModel(Repository repository, Context application) {
+        Supplier<OverviewViewModel> supplier = () -> new OverviewViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<OverviewViewModel> factory = new ViewModelProviderFactory<>(OverviewViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(OverviewViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    TaskViewModel provideTaskViewModel(Repository repository, Context application) {
+        Supplier<TaskViewModel> supplier = () -> new TaskViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<TaskViewModel> factory = new ViewModelProviderFactory<>(TaskViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(TaskViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    RateViewModel provideRateViewModel(Repository repository, Context application) {
+        Supplier<RateViewModel> supplier = () -> new RateViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<RateViewModel> factory = new ViewModelProviderFactory<>(RateViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(RateViewModel.class);
+    }
+    @Provides
+    @FragmentScope
+    SubTaskViewModel provideSubTaskViewModel(Repository repository, Context application) {
+        Supplier<SubTaskViewModel> supplier = () -> new SubTaskViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<SubTaskViewModel> factory = new ViewModelProviderFactory<>(SubTaskViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(SubTaskViewModel.class);
     }
 
 }

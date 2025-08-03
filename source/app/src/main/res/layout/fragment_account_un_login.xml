@@ -354,7 +354,7 @@
                                     <ImageView
                                         android:layout_width="@dimen/_18sdp"
                                         android:layout_height="@dimen/_18sdp"
-                                        android:src="@drawable/ic_notification_account"
+                                        android:src="@drawable/ic_notificate_green"
                                         android:layout_gravity="center"/>
                                 </FrameLayout>
 

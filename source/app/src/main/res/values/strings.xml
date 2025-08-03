@@ -8,7 +8,7 @@
     <string name="newtwork_error_button_exit">Thoát</string>
     <string name="home">Trang chủ</string>
     <string name="cv_profile">CV &amp; Profile</string>
-    <string name="top_comment">Top Comment</string>
+    <string name="achievement">Thành tựu</string>
     <string name="notification">Thông báo</string>
     <string name="account">Tài Khoản</string>
     <string name="please_login">Vui lòng đăng nhập</string>
@@ -37,5 +37,10 @@
     <string name="login_un_success">Số điện thoại hoặc mật khẩu không đúng</string>
     <string name="edit">Sửa</string>
     <string name="no_update">Chưa cập nhật</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <string name="open">Mở</string>
+    <string name="close">Đóng</string>
 </resources>

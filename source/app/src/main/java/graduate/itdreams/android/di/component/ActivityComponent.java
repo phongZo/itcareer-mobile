@@ -8,6 +8,8 @@ import dagger.Component;
 import graduate.itdreams.android.ui.main.account.EditProfileActivity;
 import graduate.itdreams.android.ui.main.login.LoginActivity;
 import graduate.itdreams.android.ui.main.register.RegisterFlowActivity;
+import graduate.itdreams.android.ui.main.simulation.SimulationOverviewActivity;
+import graduate.itdreams.android.ui.main.taskdetail.TaskDetailActivity;
 
 @ActivityScope
 @Component(modules = {ActivityModule.class}, dependencies = AppComponent.class)
@@ -16,5 +18,9 @@ public interface ActivityComponent {
     void inject(LoginActivity activity);
     void inject(RegisterFlowActivity activity);
     void inject(EditProfileActivity activity);
+    void inject(SimulationOverviewActivity activity);
+    void inject(TaskDetailActivity activity);
+
+
 }
 

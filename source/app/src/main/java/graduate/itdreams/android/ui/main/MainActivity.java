@@ -14,8 +14,7 @@ import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
 import graduate.itdreams.android.ui.main.account.AccountFragment;
 import graduate.itdreams.android.ui.main.account.AccountUnLoginFragment;
-import graduate.itdreams.android.ui.main.comment.TopCommentFragment;
-import graduate.itdreams.android.ui.main.cv.CvProfileFragment;
+
 import graduate.itdreams.android.ui.main.home.HomeFragment;
 import graduate.itdreams.android.ui.main.login.LoginActivity;
 import graduate.itdreams.android.ui.main.notification.NotificationFragment;
@@ -25,8 +24,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private Fragment active;
     private FragmentManager fm;
     private HomeFragment homeFragment;
-    private CvProfileFragment cvProfileFragment;
-    private TopCommentFragment topCommentFragment;
+    private NotificationFragment cvProfileFragment;
+    private NotificationFragment topCommentFragment;
     private NotificationFragment notificationFragment;
     private AccountFragment accountFragment;
     private AccountUnLoginFragment accountUnLoginFragment;
@@ -50,9 +49,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             switch (item.getItemId()) {
                 case R.id.home:
                     handleFragment(HOME);
-                    return true;
-                case R.id.cv_profile:
-                    handleFragment(CV_PROFILE);
                     return true;
                 case R.id.top_comment:
                     handleFragment(TOP_COMMENT);
@@ -97,8 +93,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         if (fm == null) fm = getSupportFragmentManager();
 
         if (homeFragment == null) homeFragment = new HomeFragment();
-        if (cvProfileFragment == null) cvProfileFragment = new CvProfileFragment();
-        if (topCommentFragment == null) topCommentFragment = new TopCommentFragment();
+        if (cvProfileFragment == null) cvProfileFragment = new NotificationFragment();
+        if (topCommentFragment == null) topCommentFragment = new NotificationFragment();
         if (notificationFragment == null) notificationFragment = new NotificationFragment();
         if (accountFragment == null) accountFragment = new AccountFragment();
         if (accountUnLoginFragment == null) accountUnLoginFragment = new AccountUnLoginFragment();

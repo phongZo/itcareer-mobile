@@ -13,13 +13,12 @@ import graduate.itdreams.android.ui.base.fragment.BaseFragment;
 import graduate.itdreams.android.ui.main.MainActivity;
 
 public class QuizJobFragment extends BaseFragment<FragmentQuizJobBinding, QuizJobViewModel> {
-    String idHash = null;
-    String email = null;
 
 
     @Override
     protected void performDataBinding() {
-
+        binding.setF(this);
+        binding.setVm(viewModel);
     }
     public void onConfirmClick(){
         Intent intent = new Intent(getContext(), MainActivity.class);

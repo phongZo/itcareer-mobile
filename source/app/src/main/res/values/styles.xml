@@ -34,6 +34,19 @@
         <item name="hintTextColor">@color/text_second</item>
         <item name="endIconTint">@color/text_second</item>
     </style>
+
+    <style name="Text_11_Normal_No_Update">
+        <item name="android:textSize">@dimen/_11ssp</item>
+        <item name="android:textColor">@color/no_update</item>
+    </style>
+
+
+
+    <style name="Text_24_Bold_White">
+        <item name="android:textSize">@dimen/_24ssp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="Text_16_Bold_Black">
         <item name="android:textSize">@dimen/_16ssp</item>
         <item name="android:textColor">@color/text_black</item>
@@ -44,6 +57,17 @@
         <item name="android:textSize">@dimen/_16ssp</item>
         <item name="android:textColor">@color/text_black</item>
     </style>
+    <style name="Text_16_Bold_White">
+        <item name="android:textSize">@dimen/_16ssp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text_16_Normal_White">
+        <item name="android:textSize">@dimen/_16ssp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Text_14_Bold_Black">
         <item name="android:textSize">@dimen/_14ssp</item>
         <item name="android:textColor">@color/text_black</item>
@@ -54,8 +78,16 @@
         <item name="android:textSize">@dimen/_14ssp</item>
         <item name="android:textColor">@color/text_black</item>
     </style>
+    <style name="Text_14_Bold_White">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-
+    <style name="Text_14_Normal_White">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
     <style name="Text_12_Bold_Black">
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textColor">@color/text_black</item>
@@ -75,51 +107,6 @@
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textColor">@color/text_app</item>
     </style>
-    <style name="Text_10_Bold_Black">
-        <item name="android:textSize">@dimen/_10ssp</item>
-        <item name="android:textColor">@color/text_black</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="Text_10_Normal_Black">
-        <item name="android:textSize">@dimen/_10ssp</item>
-        <item name="android:textColor">@color/text_black</item>
-    </style>
-
-    <style name="Text_11_Normal_No_Update">
-        <item name="android:textSize">@dimen/_11ssp</item>
-        <item name="android:textColor">@color/no_update</item>
-    </style>
-
-    <style name="Text_8_Bold_Black">
-        <item name="android:textSize">@dimen/_8ssp</item>
-        <item name="android:textColor">@color/text_black</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="Text_8_Normal_Black">
-        <item name="android:textSize">@dimen/_8ssp</item>
-        <item name="android:textColor">@color/text_black</item>
-    </style>
-    <style name="Text_16_Bold_White">
-        <item name="android:textSize">@dimen/_16ssp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Text_16_Normal_White">
-        <item name="android:textSize">@dimen/_16ssp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-    <style name="Text_14_Bold_White">
-        <item name="android:textSize">@dimen/_14ssp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Text_14_Normal_White">
-        <item name="android:textSize">@dimen/_14ssp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <style name="Text_12_Bold_White">
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textColor">@color/white</item>
@@ -141,6 +128,15 @@
         <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="Text_10_Bold_Black">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Text_10_Normal_Black">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
 
     <style name="Text_8_Bold_White">
         <item name="android:textSize">@dimen/_8ssp</item>
@@ -152,7 +148,15 @@
         <item name="android:textSize">@dimen/_8ssp</item>
         <item name="android:textColor">@color/white</item>
     </style>
-
+    <style name="Text_8_Bold_Black">
+        <item name="android:textSize">@dimen/_8ssp</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Text_8_Normal_Black">
+        <item name="android:textSize">@dimen/_8ssp</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
     <style name="Text_Error">
         <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:textColor">@color/text_error</item>

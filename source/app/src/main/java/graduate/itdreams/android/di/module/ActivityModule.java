@@ -14,6 +14,8 @@ import graduate.itdreams.android.ui.main.MainViewModel;
 import graduate.itdreams.android.ui.main.account.EditProfileViewModel;
 import graduate.itdreams.android.ui.main.login.LoginViewModel;
 import graduate.itdreams.android.ui.main.register.RegisterFlowViewModel;
+import graduate.itdreams.android.ui.main.simulation.SimulationOverviewViewModel;
+import graduate.itdreams.android.ui.main.taskdetail.TaskDetailViewModel;
 import graduate.itdreams.android.utils.GetInfo;
 
 import javax.inject.Named;
@@ -75,5 +77,19 @@ public class ActivityModule {
         Supplier<EditProfileViewModel> supplier = () -> new EditProfileViewModel(repository, (MVVMApplication)application);
         ViewModelProviderFactory<EditProfileViewModel> factory = new ViewModelProviderFactory<>(EditProfileViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(EditProfileViewModel.class);
+    }
+    @Provides
+    @ActivityScope
+    SimulationOverviewViewModel provideSimulationOverviewViewModel(Repository repository, Context application) {
+        Supplier<SimulationOverviewViewModel> supplier = () -> new SimulationOverviewViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<SimulationOverviewViewModel> factory = new ViewModelProviderFactory<>(SimulationOverviewViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(SimulationOverviewViewModel.class);
+    }
+    @Provides
+    @ActivityScope
+    TaskDetailViewModel provideTaskDetailViewModel(Repository repository, Context application) {
+        Supplier<TaskDetailViewModel> supplier = () -> new TaskDetailViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<TaskDetailViewModel> factory = new ViewModelProviderFactory<>(TaskDetailViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(TaskDetailViewModel.class);
     }
 }
