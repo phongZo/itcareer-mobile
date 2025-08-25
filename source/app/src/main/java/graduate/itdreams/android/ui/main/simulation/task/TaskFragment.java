@@ -58,9 +58,9 @@ public class TaskFragment extends BaseFragment<FragmentTaskBinding, TaskViewMode
     private TextView createTabView(TaskResponse tab, int index, boolean isTabEnd){
         TextView tabView = new TextView(requireContext());
 
-        Gson gson = new Gson();
-        ItemTitleContentResponse itemName = gson.fromJson(tab.getName(), ItemTitleContentResponse.class);
-        tabView.setText(itemName.getTitle());
+//        Gson gson = new Gson();
+//        ItemTitleContentResponse itemName = gson.fromJson(tab.getName(), ItemTitleContentResponse.class);
+        tabView.setText(tab.getName());
         tabView.setTypeface(null, Typeface.BOLD);
 
         if(isTabEnd){

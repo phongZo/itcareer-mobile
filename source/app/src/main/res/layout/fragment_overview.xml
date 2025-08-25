@@ -38,12 +38,28 @@
 Welcome to the GenAI Powered Data Analytics Job Simulation! We are thrilled to have you here.
 Tata Insights and Quants (Tata iQ) is the Tata Group’s advanced analytics and AI center of excellence. Tata iQ partners with companies across the Group to turn data into competitive advantage by enabling smarter, data-informed decision-making." />
 
+            <FrameLayout
+                android:id="@+id/video_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp">
+
+                <com.google.android.exoplayer2.ui.PlayerView
+                    android:id="@+id/player_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:controller_layout_id="@layout/custom_controller"
+                    app:use_controller="true"
+                    app:resize_mode="fit"/>
+
+            </FrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

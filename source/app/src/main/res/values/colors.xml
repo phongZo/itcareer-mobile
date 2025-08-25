@@ -33,5 +33,5 @@
     <color name="text_gray">#6F6E6E</color>
     <color name="text_green">#0C6F30</color>
     <color name="star">#FFC107</color>
-
+    <color name="white_transparent_70">#B3FFFFFF</color>
 </resources>

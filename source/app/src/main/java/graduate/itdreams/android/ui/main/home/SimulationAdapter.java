@@ -1,11 +1,14 @@
 package graduate.itdreams.android.ui.main.home;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +26,18 @@ public class SimulationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public SimulationAdapter(HomeViewModel viewModel, OnPostClickListener listener){
         this.viewModel = viewModel;
         this.listener = listener;
-    }
 
+        viewModel.imageLiveData.observeForever(pair -> { Long itemId = pair.first;
+        Bitmap bitmap = pair.second;
+        int position = findPositionById(itemId);
+        if (position != -1) { notifyItemChanged(position); } });
+    }
+    private int findPositionById(Long itemId){
+        for (int i = 0; i < simulationList.size(); i++) {
+            if (simulationList.get(i).getId().equals(itemId)) return i;
+        }
+        return -1;
+    }
     public void setData(List<SimulationResponse> newData){
         simulationList.clear();
 
@@ -67,6 +80,13 @@ public class SimulationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             binding.tvCompanyName.setText(item.getEducator().getProfileAccountDto().getFullName());
             binding.ratingBar.setRating(item.getAvgRating());
             binding.tvEstimatedTime.setText(item.getTotalEstimatedTime());
+
+            Bitmap bitmap = viewModel.getBitmapFromCache(item.getId());
+            if (bitmap != null) {
+                binding.ivLogo.setImageBitmap(bitmap);
+            }else {
+                viewModel.loadImageForItem(item.getId(), item.getImagePath());
+            }
 
             binding.getRoot().setOnClickListener(v -> {
                 if (item != null) {

@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class StudentUpdateProfileRequest {
+    private String avatarPath;
     private String fullName;
     private String birthday;
     private String username;
-    private String email;
 }

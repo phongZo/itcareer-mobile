@@ -3,18 +3,21 @@ package graduate.itdreams.android.data;
 import graduate.itdreams.android.data.local.prefs.PreferencesService;
 import graduate.itdreams.android.data.local.room.RoomService;
 import graduate.itdreams.android.data.remote.ApiService;
+import graduate.itdreams.android.data.remote.UploadApiService;
 
 import javax.inject.Inject;
 
 public class AppRepository implements Repository {
 
     private final ApiService mApiService;
+    private final UploadApiService mUploadApiService;
     private final PreferencesService mPreferencesHelper;
     private final RoomService roomService;
 
     @Inject
-    public AppRepository(PreferencesService preferencesHelper, ApiService apiService, RoomService roomService) {
+    public AppRepository(PreferencesService preferencesHelper, UploadApiService uploadApiService, ApiService apiService, RoomService roomService) {
         this.mPreferencesHelper = preferencesHelper;
+        this.mUploadApiService = uploadApiService;
         this.mApiService = apiService;
         this.roomService = roomService;
     }
@@ -47,6 +50,10 @@ public class AppRepository implements Repository {
         return mApiService;
     }
 
+    @Override
+    public UploadApiService getUploadApiService() {
+        return mUploadApiService;
+    }
 
     @Override
     public RoomService getRoomService() {

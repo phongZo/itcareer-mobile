@@ -15,10 +15,13 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import graduate.itdreams.android.data.remote.UploadApiService;
+import graduate.itdreams.android.di.qualifier.UploadApiInfo;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import graduate.itdreams.android.BuildConfig;
 import graduate.itdreams.android.constant.Constants;
@@ -50,6 +53,12 @@ public class AppModule {
         return BuildConfig.BASE_URL;
     }
 
+    @Provides
+    @UploadApiInfo
+    @Singleton
+    String provideUrlFile() {
+        return BuildConfig.URL_FILE;
+    }
 
     @Provides
     @Singleton
@@ -112,6 +121,18 @@ public class AppModule {
                 .build();
     }
 
+    @Provides
+    @Singleton
+    @Named("UploadRetrofit")
+    public Retrofit provideUploadRetrofit(OkHttpClient client, @UploadApiInfo String url) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
+    }
+
     // Create api service
     @Provides
     @Singleton
@@ -119,6 +140,11 @@ public class AppModule {
         return retrofit.create(ApiService.class);
     }
 
+    @Provides
+    @Singleton
+    public UploadApiService uploadApiService(@Named("UploadRetrofit") Retrofit retrofit) {
+        return retrofit.create(UploadApiService.class);
+    }
 
     @Provides
     @Singleton

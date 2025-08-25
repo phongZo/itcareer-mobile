@@ -1,15 +1,23 @@
 package graduate.itdreams.android.ui.main.home;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+import android.util.Pair;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.data.Repository;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.ui.base.fragment.BaseFragmentViewModel;
+import graduate.itdreams.android.utils.ImageUtils;
 import graduate.itdreams.android.utils.NetworkUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -22,7 +30,7 @@ import timber.log.Timber;
 
 public class HomeViewModel extends BaseFragmentViewModel {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
+    public final MutableLiveData<Pair<Long, Bitmap>> imageLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<SimulationResponse>> _simulationList = new MutableLiveData<>();
     public LiveData<List<SimulationResponse>> getPostList() {
         return _simulationList;
@@ -62,4 +70,27 @@ public class HomeViewModel extends BaseFragmentViewModel {
                             }
                         }));
     }
+    private final Map<Long, Bitmap> bitmapCache = new HashMap<>();
+
+    public Bitmap getBitmapFromCache(Long itemId) {
+        return bitmapCache.get(itemId);
+    }
+
+    public void loadImageForItem(Long itemId, String url) {
+        if (bitmapCache.containsKey(itemId)) return; // đã có thì không tải lại
+
+        compositeDisposable.add(repository.getUploadApiService().loadImage(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseBody -> {
+                    InputStream inputStream = responseBody.byteStream();
+                    Bitmap bitmap = ImageUtils.getBitmap(inputStream);
+                    if (bitmap != null) {
+                        bitmapCache.put(itemId, bitmap);
+                        imageLiveData.setValue(new Pair<>(itemId, bitmap));
+                    }
+                }, throwable -> Log.e("ViewModel", "Lỗi tải ảnh: " + throwable.getMessage()))
+        );
+    }
+
 }

@@ -30,7 +30,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.constant.Constants;
@@ -66,6 +65,13 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection(getBuildComponent());
         super.onCreate(savedInstanceState);
+
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN        // ẩn status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+
         performDataBinding();
         updateCurrentAcitivity();
 

@@ -52,12 +52,12 @@ public class TaskItemFragment extends Fragment {
         binding = FragmentTaskItemBinding.inflate(inflater, container, false);
 
         Gson gson = new Gson();
-        ItemTitleContentResponse itemName = gson.fromJson(task.getName(), ItemTitleContentResponse.class);
+        //ItemTitleContentResponse itemName = gson.fromJson(task.getName(), ItemTitleContentResponse.class);
         if (task != null) {
-            binding.tvTitleDescription.setText(itemName.getContent());
+            binding.tvTitleDescription.setText(task.getTitle());
             binding.tvDescription.setText(task.getDescription());
 
-            String contentJson = task.getContent();
+            String contentJson = task.getIntroduction();
             Type listType = new TypeToken<List<ItemTitleContentResponse>>(){}.getType();
             List<ItemTitleContentResponse> taskContentlist = gson.fromJson(contentJson, listType);
 

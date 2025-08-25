@@ -1,10 +1,20 @@
 package graduate.itdreams.android.ui.main.account;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -18,7 +28,8 @@ import graduate.itdreams.android.ui.base.activity.BaseActivity;
 
 public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding, EditProfileViewModel> {
     private Calendar selectedBirthDate = null;
-
+    private File selectedImageFile;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,22 +39,58 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
         viewModel.loadProfile();
         viewBinding.toolbar.setNavigationOnClickListener(v -> finish());
         setUpBirthDate();
+        imagePickerLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        viewBinding.avatar.setImageURI(imageUri);
+                        selectedImageFile = convertUriToFile(imageUri);
+                    }
+                });
+        viewBinding.avatar.setOnClickListener(v -> openImagePicker());
+        viewModel.avatarLiveData.observe(this, bitmap -> {
+            if (bitmap != null) {
+                viewBinding.avatar.setImageBitmap(bitmap);
+            }
+        });
+        viewModel.isSuccess.observe(this, success -> {
+            finish();
+        });
     }
-
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        imagePickerLauncher.launch(intent);
+    }
+    private File convertUriToFile(Uri uri) {
+        try {
+            File file = new File(getCacheDir(), "temp_image.jpg");
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.close();
+            inputStream.close();
+            return file;
+        } catch (Exception e) {
+            Log.e("CreateContactActivity", "Lỗi khi chuyển Uri thành File: " + e.getMessage());
+            return null;
+        }
+    }
     public void onUpdateProfile() {
         String fullname = viewBinding.name.getText().toString().trim();
-        String email = viewBinding.email.getText().toString().trim();
         String username = viewBinding.username.getText().toString().trim();
         StudentUpdateProfileRequest request = new StudentUpdateProfileRequest();
         request.setFullName(fullname);
-        request.setEmail(email);
         request.setUsername(username);
         if (selectedBirthDate != null) {
             SimpleDateFormat apiFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
             String formattedBirthDate = apiFormat.format(selectedBirthDate.getTime());
             request.setBirthday(formattedBirthDate);
         }
-        viewModel.updateProfile(request);
+        viewModel.onConfirmClicked(selectedImageFile, request);
     }
 
     private void setUpBirthDate() {

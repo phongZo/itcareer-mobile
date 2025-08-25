@@ -68,25 +68,19 @@ public class AccountViewModel extends BaseFragmentViewModel {
     }
 
     public void loadAvatar(String url){
-        compositeDisposable.add(repository.getApiService().loadImage(url)
+        compositeDisposable.add(repository.getUploadApiService().loadImage(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ResponseBody>() {
-                    @Override
-                    public void accept(ResponseBody response) throws Exception {
-                        InputStream inputStream = response.byteStream();
-                        Bitmap bitmap = ImageUtils.getBitmap(inputStream);
-                        if (bitmap != null) {
-                            avatarLiveData.setValue(bitmap);
-                        } else {
-                            Log.e("ProfileViewModel", "Lỗi: Bitmap rỗng");
-                        }
+                .subscribe( responseBody ->  {
+                    InputStream inputStream = responseBody.byteStream();
+                    Bitmap bitmap = ImageUtils.getBitmap(inputStream);
+                    if (bitmap != null) {
+                        avatarLiveData.setValue(bitmap);
+                    } else {
+                        Log.e("ProfileViewModel", "Lỗi: Bitmap rỗng");
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("ProfileViewModel", "Lỗi khi tải ảnh: " + throwable.getMessage());
-                    }
+                }, throwable -> {
+                    Log.e("ProfileViewModel", "Lỗi khi tải ảnh: " + throwable.getMessage());
                 })
         );
 
@@ -94,6 +88,5 @@ public class AccountViewModel extends BaseFragmentViewModel {
     public void logout(){
         repository.getSharedPreferences().setToken(null);
         repository.getSharedPreferences().saveAccessTokenObject(null);
-
     }
 }

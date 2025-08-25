@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
@@ -13,7 +13,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "BASE_URL", "\"https://api.itdreamcareer.io.vn/\""
+        buildConfigField "String", "BASE_URL", "\"https://itcareer-api.nd24.id.vn/\""
+        buildConfigField "String", "URL_FILE", "\"https://itcareer-media.nd24.id.vn/\""
+        buildConfigField "String", "URL_LOAD_VIDEO", "\"https://itcareer-socket.nd24.id.vn/live\""
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -155,5 +157,10 @@ dependencies {
     implementation "com.github.arkon.FlexibleAdapter:flexible-adapter:$flexible_adapter_version"
     implementation "com.github.arkon.FlexibleAdapter:flexible-adapter-databinding:$flexible_adapter_version"
     implementation "com.github.arkon.FlexibleAdapter:flexible-adapter-ui:$flexible_adapter_version"
+
+    //Video
+    implementation "com.google.android.exoplayer:exoplayer:2.17.1"
+    implementation "com.google.android.exoplayer:exoplayer-ui:2.17.1"
+
 
 }

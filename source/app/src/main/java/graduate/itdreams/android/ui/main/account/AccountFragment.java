@@ -21,9 +21,6 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding, Accoun
             }
         });
 
-
-
-
     }
     public void onLogoutClick(){
         viewModel.logout();

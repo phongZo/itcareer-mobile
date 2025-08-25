@@ -72,33 +72,5 @@ public class SignUpViewModel extends BaseFragmentViewModel {
                         }));
     }
 
-    public void uploadImage(File imageFile ){
-        if (imageFile == null || !imageFile.exists()) {
-            Log.e("Upload", "❌ File ảnh không hợp lệ hoặc không tồn tại!");
-            return;
-        }
 
-        Log.d("Upload", "📤 Bắt đầu upload ảnh: " + imageFile.getAbsolutePath());
-
-        RequestBody type = RequestBody.create(MediaType.parse("text/plain"), "AVATAR");
-
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
-
-        compositeDisposable.add(repository.getApiService().uploadImage(type, body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    if (response.isResult() && response.getData() != null) {
-                        UploadResponse uploadedUrl = response.getData();
-                        avatarUri.setValue(uploadedUrl.getFilePath());
-                        Log.d("Upload", "✅ Thành công! Ảnh URL: " + uploadedUrl);
-                    } else {
-                        Log.e("Upload", "❌ Lỗi Upload: " + response.getMessage());
-                    }
-                }, throwable -> {
-                    Log.e("Upload", "❌ Lỗi kết nối: " + throwable.getMessage());
-                })
-        );
-    }
 }

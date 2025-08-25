@@ -1,11 +1,15 @@
 package graduate.itdreams.android.ui.main.simulation;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -32,12 +36,39 @@ public class SimulationOverviewActivity extends BaseActivity<ActivitySimulationO
         viewBinding.btnBack.setOnClickListener(v -> finish());
 
         customTabLayout();
-
+        setupToolbar();
         long itemId = getIntent().getLongExtra("item_id", -1L);
         viewModel.fetchSimulationDetail(itemId);
 
-    }
+        viewModel.imageLiveData.observe(this, bitmap -> {
+            if (bitmap != null) {
+                Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                viewBinding.toolbar.setBackground(drawable);
+            }
+        });
 
+    }
+    private void setupToolbar() {
+        viewBinding.appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShown = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+
+                if (scrollRange + verticalOffset == 0) {
+                    viewBinding.toolbarCollapse.setVisibility(View.VISIBLE);
+                    isShown = true;
+                } else if (isShown) {
+                    viewBinding.toolbarCollapse.setVisibility(View.GONE);
+                    isShown = false;
+                }
+            }
+        });
+    }
     @Override
     public int getLayoutId() {
         return R.layout.activity_simulation_overview;

@@ -37,7 +37,6 @@ import graduate.itdreams.android.ui.main.login.SimpleTextWatcher;
 
 public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpViewModel> {
     private Calendar selectedBirthDate = null;
-    private File selectedImageFile;
 
     @Override
     protected void performDataBinding() {
@@ -47,37 +46,6 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
         setUpRePassword();
         setUpPassword();
         setUpBirthDate();
-    }
-    private final ActivityResultLauncher<Intent> imagePickerLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    Uri imageUri = result.getData().getData();
-                    binding.ivAvatar.setImageURI(imageUri);
-                    selectedImageFile = convertUriToFile(imageUri);
-                }
-            });
-
-    private File convertUriToFile(Uri uri) {
-        try {
-            File file = new File(requireContext().getCacheDir(), "temp_image.jpg");
-            InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
-            FileOutputStream outputStream = new FileOutputStream(file);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-            outputStream.close();
-            inputStream.close();
-            return file;
-        } catch (Exception e) {
-            Log.e("CreateContactActivity", "Lỗi khi chuyển Uri thành File: " + e.getMessage());
-            return null;
-        }
-    }
-    public void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        imagePickerLauncher.launch(intent);
     }
     private void goToOtpFragment(String idHash) {
         VerifyOTPFragment otpFragment = new VerifyOTPFragment();
@@ -114,10 +82,6 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
 
             datePickerDialog.show();
         });
-    }
-
-    public void hideKeyboard(View v) {
-        super.hideKeyboard();
     }
 
     public void onSignUpClick() {

@@ -30,7 +30,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         setUpPassword();
         setUpValidation();
         viewModel.loginSuccess.observe(this, unused -> {
-            // Chuyển màn hình
+            Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MainActivity.class));
         });
 
@@ -97,13 +97,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         request.setPassword(viewBinding.password.getText().toString().trim());
 
         viewModel.candidateLogin(request);
-        viewModel.loginSuccess.observe(this, success -> {
-            if (Boolean.TRUE.equals(success)) {
-                Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 

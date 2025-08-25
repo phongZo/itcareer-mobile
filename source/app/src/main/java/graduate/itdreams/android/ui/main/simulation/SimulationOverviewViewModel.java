@@ -1,8 +1,12 @@
 package graduate.itdreams.android.ui.main.simulation;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.InputStream;
 import java.util.List;
 
 import graduate.itdreams.android.MVVMApplication;
@@ -10,16 +14,19 @@ import graduate.itdreams.android.data.Repository;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.ui.base.activity.BaseViewModel;
+import graduate.itdreams.android.utils.ImageUtils;
 import graduate.itdreams.android.utils.NetworkUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
 import timber.log.Timber;
 
 public class SimulationOverviewViewModel extends BaseViewModel {
+    public final MutableLiveData<Bitmap> imageLiveData = new MutableLiveData<>();
     public final MutableLiveData<String> title = new MutableLiveData<>("");
     public final MutableLiveData<String> author = new MutableLiveData<>("");
     public final MutableLiveData<String> estimatedTime = new MutableLiveData<>("");
@@ -36,6 +43,7 @@ public class SimulationOverviewViewModel extends BaseViewModel {
     public SimulationOverviewViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
+
     public void fetchSimulationDetail(Long id) {
         showLoading();
         compositeDisposable.add(repository.getApiService().getSimulationDetail(id)
@@ -61,6 +69,7 @@ public class SimulationOverviewViewModel extends BaseViewModel {
 
                             simulationDetail.setValue(response.getData());
                             simulationId.setValue(id);
+                            loadImage(response.getData().getImagePath());
                         }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);
@@ -70,5 +79,25 @@ public class SimulationOverviewViewModel extends BaseViewModel {
                                 }
                             }
                         }));
+    }
+
+
+    public void loadImage(String url){
+        compositeDisposable.add(repository.getUploadApiService().loadImage(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( responseBody ->  {
+                    InputStream inputStream = responseBody.byteStream();
+                    Bitmap bitmap = ImageUtils.getBitmap(inputStream);
+                    if (bitmap != null) {
+                        imageLiveData.setValue(bitmap);
+                    } else {
+                        Log.e("ProfileViewModel", "Lỗi: Bitmap rỗng");
+                    }
+                }, throwable -> {
+                    Log.e("ProfileViewModel", "Lỗi khi tải ảnh: " + throwable.getMessage());
+                })
+        );
+
     }
 }
