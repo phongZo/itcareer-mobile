@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-
 import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.model.api.request.login.CandidateLoginRequest;
@@ -80,7 +79,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
         if (phone.isEmpty()) {
             viewBinding.email.setBackgroundResource(R.drawable.bg_text_box_select);
-            viewBinding.mgsErPhone.setVisibility(View.VISIBLE);
+            viewBinding.mgsErEmail.setVisibility(View.VISIBLE);
             hasError = true;
         }
 
@@ -104,10 +103,16 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     public void setUpValidation() {
         viewBinding.email.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                String phone = viewBinding.email.getText().toString().trim();
-                if (phone.isEmpty()) {
+                String email = viewBinding.email.getText().toString().trim();
+                if (email.isEmpty()) {
                     viewBinding.email.setBackgroundResource(R.drawable.bg_text_box_select);
-                    viewBinding.mgsErPhone.setVisibility(View.VISIBLE);
+                    viewBinding.mgsErEmail.setText(R.string.err_email);
+                    viewBinding.mgsErEmail.setVisibility(View.VISIBLE);
+                }else if (!isValidEmail(email)) {
+                    // Nếu sai định dạng
+                    viewBinding.email.setBackgroundResource(R.drawable.bg_text_box_select);
+                    viewBinding.mgsErEmail.setText(R.string.err_email_2);
+                    viewBinding.mgsErEmail.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -125,9 +130,10 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         viewBinding.email.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().trim().isEmpty()) {
+                String email = s.toString().trim();
+                if (!email.isEmpty() ) {
                     viewBinding.email.setBackgroundResource(R.drawable.bg_text_box_un_select);
-                    viewBinding.mgsErPhone.setVisibility(View.GONE);
+                    viewBinding.mgsErEmail.setVisibility(View.GONE);
                 }
             }
         });
@@ -141,6 +147,9 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                 }
             }
         });
+    }
+    private boolean isValidEmail(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     @Override

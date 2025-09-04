@@ -204,13 +204,16 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String email = s.toString().trim();
 
-                if (email.isEmpty()) {
-                    setError(binding.email, binding.mgsErEmail, getString(R.string.err_email));
-                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    setError(binding.email, binding.mgsErEmail, getString(R.string.err_email_2));
-                } else {
+                if (!s.toString().trim().isEmpty()) {
                     clearError(binding.email, binding.mgsErEmail);
                 }
+//                if (email.isEmpty()) {
+//                    setError(binding.email, binding.mgsErEmail, getString(R.string.err_email));
+//                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+//                    setError(binding.email, binding.mgsErEmail, getString(R.string.err_email_2));
+//                } else {
+//                    clearError(binding.email, binding.mgsErEmail);
+//                }
             }
         });
     }

@@ -78,7 +78,7 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
 
         player.setMediaItem(mediaItem);
         player.prepare();
-        player.play();
+        //player.play();
 
         ImageButton fullscreenButton = binding.playerView.findViewById(R.id.exo_fullscreen);
         fullscreenButton.setOnClickListener(v -> {

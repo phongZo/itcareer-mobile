@@ -67,35 +67,45 @@
                 android:inputType="textEmailAddress"/>
 
             <TextView
-                android:id="@+id/mgs_er_phone"
+                android:id="@+id/mgs_er_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Text_Error"
-                android:text="@string/err_phone"
+                android:text="@string/err_email"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/_23sdp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:visibility="gone"/>
 
 
-
-            <EditText
-                android:id="@+id/password"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 style="@style/Text_12_Normal_Black"
-                android:background="@drawable/bg_text_box_un_select"
-                android:hint="@string/password"
-                android:paddingHorizontal="@dimen/_12sdp"
-                android:textColorHint="@color/text_hint"
-                android:drawableStart="@drawable/lock"
-                android:drawablePadding="@dimen/_12sdp"
-                android:inputType="textPassword"
-                android:drawableEnd="@drawable/eye_closed"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:singleLine="true"
-                />
+                android:hint="Mật khẩu"
+                app:endIconMode="password_toggle"
+                app:hintEnabled="false"
+                android:layout_marginTop="30dp">
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    style="@style/Text_12_Normal_Black"
+                    android:background="@drawable/bg_text_box_un_select"
+                    android:hint="@string/password"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:textColorHint="@color/text_hint"
+                    android:drawableStart="@drawable/lock"
+                    android:drawablePadding="@dimen/_12sdp"
+                    android:inputType="textPassword"
+                    android:drawableEnd="@drawable/eye_closed"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:singleLine="true"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <TextView
                 android:id="@+id/mgs_er_password"
