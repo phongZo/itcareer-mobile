@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
@@ -43,10 +44,22 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
         binding.setF(this);
         binding.setVm(viewModel);
         setUpValidation();
-        setUpRePassword();
-        setUpPassword();
         setUpBirthDate();
+        setNoSpaceFilters();
     }
+    private void setNoSpaceFilters() {
+        InputFilter noSpaceFilter = (source, start, end, dest, dstart, dend) -> {
+            if (source != null && source.toString().contains(" ")) {
+                return source.toString().replace(" ", "");
+            }
+            return null;
+        };
+
+        binding.email.setFilters(new InputFilter[]{noSpaceFilter});
+        binding.password.setFilters(new InputFilter[]{noSpaceFilter});
+        binding.rePassword.setFilters(new InputFilter[]{noSpaceFilter});
+    }
+
     private void goToOtpFragment(String idHash) {
         VerifyOTPFragment otpFragment = new VerifyOTPFragment();
 
@@ -62,7 +75,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
                 .commit();
     }
     private void setUpBirthDate() {
-        binding.etBirthdate.setOnClickListener(v -> {
+        binding.birthdate.setOnClickListener(v -> {
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
@@ -75,7 +88,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
                         selectedBirthDate.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0);
 
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        binding.etBirthdate.setText(sdf.format(selectedBirthDate.getTime()));
+                        binding.birthdate.setText(sdf.format(selectedBirthDate.getTime()));
                     },
                     year, month, day
             );
@@ -112,6 +125,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
 
     public Boolean isValidForm() {
         String name = binding.name.getText().toString().trim();
+        String username = binding.username.getText().toString().trim();
         String email = binding.email.getText().toString().trim();
         String phone = binding.phone.getText().toString().trim();
         String password = binding.password.getText().toString().trim();
@@ -122,6 +136,11 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
         // Tên
         if (name.isEmpty()) {
             setError(binding.name, binding.mgsErName, getString(R.string.err_name));
+            noError = false;
+        }
+
+        if (username.isEmpty()) {
+            setError(binding.username, binding.mgsErUsername, getString(R.string.err_username));
             noError = false;
         }
 
@@ -138,7 +157,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
         if (phone.isEmpty()) {
             setError(binding.phone, binding.mgsErPhone, getString(R.string.err_phone));
             noError = false;
-        } else if (!phone.matches("^[0-9]{10,11}$")) {
+        } else if (!phone.matches("^0[0-9]{9}$")) {
             setError(binding.phone, binding.mgsErPhone, getString(R.string.err_phone_2));
             noError = false;
         }
@@ -147,7 +166,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
         if (password.isEmpty()) {
             setError(binding.password, binding.mgsErPassword, getString(R.string.err_password));
             noError = false;
-        } else if (password.length() < 6 || password.length() > 12) {
+        } else if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,}$")) {
             setError(binding.password, binding.mgsErPassword, getString(R.string.err_password_2));
             noError = false;
         }
@@ -161,6 +180,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
     }
     private void setUpValidation() {
         validateName();
+        validateUsername();
         validateEmail();
         validatePhone();
         validatePassword();
@@ -186,7 +206,25 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
             }
         });
     }
+    private void validateUsername() {
+        binding.username.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String username = binding.username.getText().toString().trim();
+                if (username.isEmpty()) {
+                    setError(binding.username, binding.mgsErUsername, getString(R.string.err_name));
+                }
+            }
+        });
 
+        binding.username.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().trim().isEmpty()) {
+                    clearError(binding.username, binding.mgsErUsername);
+                }
+            }
+        });
+    }
     private void validateEmail() {
         binding.email.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
@@ -204,16 +242,9 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String email = s.toString().trim();
 
-                if (!s.toString().trim().isEmpty()) {
+                if (!email.isEmpty()) {
                     clearError(binding.email, binding.mgsErEmail);
                 }
-//                if (email.isEmpty()) {
-//                    setError(binding.email, binding.mgsErEmail, getString(R.string.err_email));
-//                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//                    setError(binding.email, binding.mgsErEmail, getString(R.string.err_email_2));
-//                } else {
-//                    clearError(binding.email, binding.mgsErEmail);
-//                }
             }
         });
     }
@@ -223,7 +254,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
                 String phone = binding.phone.getText().toString().trim();
                 if (phone.isEmpty()) {
                     setError(binding.phone, binding.mgsErPhone, getString(R.string.err_phone));
-                } else if (!phone.matches("^[0-9]{10,11}$")) {
+                } else if (!phone.matches("^0[0-9]{9}$")) {
                     setError(binding.phone, binding.mgsErPhone, getString(R.string.err_phone_2));
                 }
             }
@@ -233,14 +264,10 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String phone = s.toString().trim();
-
-                if (phone.isEmpty()) {
-                    setError(binding.phone, binding.mgsErPhone, getString(R.string.err_phone));
-                } else if (!phone.matches("^[0-9]{10,11}$")) {
-                    setError(binding.phone, binding.mgsErPhone, getString(R.string.err_phone_2));
-                } else {
+                if (!phone.isEmpty()) {
                     clearError(binding.phone, binding.mgsErPhone);
                 }
+
             }
         });
     }
@@ -250,7 +277,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
                 String password = binding.password.getText().toString().trim();
                 if (password.isEmpty()) {
                     setError(binding.password, binding.mgsErPassword, getString(R.string.err_password));
-                } else if (password.length() < 6 || password.length() > 12) {
+                } else if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,}$")) {
                     setError(binding.password, binding.mgsErPassword, getString(R.string.err_password_2));
                 }
             }
@@ -261,11 +288,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String password = s.toString().trim();
 
-                if (password.isEmpty()) {
-                    setError(binding.password, binding.mgsErPassword, getString(R.string.err_password));
-                } else if (password.length() < 6 || password.length() > 12) {
-                    setError(binding.password, binding.mgsErPassword, getString(R.string.err_password_2));
-                } else {
+                if (!password.isEmpty()) {
                     clearError(binding.password, binding.mgsErPassword);
                 }
             }
@@ -303,54 +326,6 @@ public class SignUpFragment extends BaseFragment<FragmentSignupBinding, SignUpVi
     private void clearError(EditText editText, TextView errorText) {
         editText.setBackgroundResource(R.drawable.bg_text_box_un_select);
         errorText.setVisibility(View.GONE);
-    }
-    @SuppressLint("ClickableViewAccessibility")
-    public void setUpPassword() {
-        binding.password.setOnTouchListener((v, event) -> {
-            final int DRAWABLE_END = 2; // 0: left, 1: top, 2: right, 3: bottom
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (event.getRawX() >= (binding.password.getRight() - binding.password.getCompoundDrawables()[DRAWABLE_END].getBounds().width())) {
-                    // Đảo trạng thái hiển thị mật khẩu
-                    if (binding.password.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                        // Hiển thị mật khẩu
-                        binding.password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        binding.password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye_open, 0);
-                    } else {
-                        // Ẩn mật khẩu
-                        binding.password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        binding.password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye_closed, 0);
-                    }
-                    // Đặt lại con trỏ
-                    binding.password.setSelection(binding.password.getText().length());
-                    return true;
-                }
-            }
-            return false;
-        });
-    }
-    @SuppressLint("ClickableViewAccessibility")
-    public void setUpRePassword() {
-        binding.rePassword.setOnTouchListener((v, event) -> {
-            final int DRAWABLE_END = 2; // 0: left, 1: top, 2: right, 3: bottom
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (event.getRawX() >= (binding.rePassword.getRight() - binding.rePassword.getCompoundDrawables()[DRAWABLE_END].getBounds().width())) {
-                    // Đảo trạng thái hiển thị mật khẩu
-                    if (binding.rePassword.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                        // Hiển thị mật khẩu
-                        binding.rePassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        binding.rePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye_open, 0);
-                    } else {
-                        // Ẩn mật khẩu
-                        binding.rePassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        binding.rePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye_closed, 0);
-                    }
-                    // Đặt lại con trỏ
-                    binding.rePassword.setSelection(binding.rePassword.getText().length());
-                    return true;
-                }
-            }
-            return false;
-        });
     }
     @Override
     public int getBindingVariable() {

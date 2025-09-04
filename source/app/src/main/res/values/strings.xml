@@ -15,16 +15,18 @@
     <string name="login">Đăng nhập</string>
     <string name="phone">Phone</string>
     <string name="password">Mật Khẩu</string>
+    <string name="repassword">Nhập lại mật Khẩu</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="signup">Đăng ký</string>
     <string name="err_name">Hãy cho chúng tôi biết tên của bạn</string>
+    <string name="err_username">Hãy đặt username của bạn</string>
     <string name="err_email">Hãy cho chúng tôi biết email của bạn</string>
     <string name="err_phone">Hãy cho chúng tôi biết số điện thoại của bạn</string>
     <string name="err_password">Mật khẩu không được để trống</string>
     <string name="err_email_2">Địa chỉ email không đúng định dạng</string>
-    <string name="err_phone_2">Số điện thoại không đúng định dạng</string>
-    <string name="err_password_2">Mật khẩu phải từ 6 đến 12 kí tự</string>
+    <string name="err_phone_2">Số điện thoại phải gồm 10 số và bắt đầu bằng số 0</string>
+    <string name="err_password_2">Mật khẩu phải từ 8 kí tự trở lên, có ít nhất 1 kí tự thường, 1 kí tự hoa, 1 kí tự số và 1 kí tự đặc biệt</string>
     <string name="err_password_3">Mật khẩu không khớp</string>
 
     <string name="signup_success">Đăng ký tài khoản thành công</string>

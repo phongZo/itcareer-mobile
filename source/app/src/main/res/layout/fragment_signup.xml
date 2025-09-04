@@ -38,21 +38,6 @@
                     style="@style/Text_16_Bold_Black"
                     android:layout_margin="@dimen/_12sdp"/>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="@dimen/_50sdp"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_1sdp">
-
-                    <ImageView
-                        android:id="@+id/iv_avatar"
-                        android:layout_width="@dimen/_70sdp"
-                        android:layout_height="@dimen/_70sdp"
-                        android:src="@drawable/avatar"
-                        android:layout_margin="@dimen/_12sdp"/>
-                </androidx.cardview.widget.CardView>
-
                 <EditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
@@ -80,7 +65,7 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:visibility="gone"/>
                 <EditText
-                    android:id="@+id/et_birthdate"
+                    android:id="@+id/birthdate"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:background="@drawable/bg_text_box_un_select"
@@ -111,6 +96,16 @@
                     android:drawablePadding="@dimen/_12sdp"
                     android:singleLine="true"
                     />
+                <TextView
+                    android:id="@+id/mgs_er_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text_Error"
+                    android:text="@string/err_username"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/_23sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:visibility="gone"/>
                 <EditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
@@ -166,23 +161,30 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:visibility="gone"/>
 
-                <EditText
-                    android:id="@+id/password"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    style="@style/Text_12_Normal_Black"
-                    android:background="@drawable/bg_text_box_un_select"
-                    android:hint="@string/password"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    android:textColorHint="@color/text_hint"
-                    android:drawableStart="@drawable/lock"
-                    android:drawablePadding="@dimen/_12sdp"
-                    android:inputType="textPassword"
                     android:layout_marginTop="@dimen/_12sdp"
-                    android:singleLine="true"
-                    android:drawableEnd="@drawable/eye_closed"
-                    />
+                    app:endIconMode="password_toggle"
+                    app:hintEnabled="false">
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        style="@style/Text_12_Normal_Black"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:textColorHint="@color/text_hint"
+                        android:background="@drawable/bg_text_box_un_select"
+                        android:drawableStart="@drawable/lock"
+                        android:drawablePadding="@dimen/_12sdp"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
                 <TextView
                     android:id="@+id/mgs_er_password"
                     android:layout_width="wrap_content"
@@ -190,26 +192,33 @@
                     style="@style/Text_Error"
                     android:text="@string/err_password"
                     android:layout_gravity="start"
-                    android:layout_marginStart="@dimen/_23sdp"
+                    android:layout_marginHorizontal="@dimen/_23sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:visibility="gone"/>
-                <EditText
-                    android:id="@+id/re_password"
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    style="@style/Text_12_Normal_Black"
-                    android:background="@drawable/bg_text_box_un_select"
-                    android:hint="Nhập lại mật khẩu"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    android:textColorHint="@color/text_hint"
-                    android:drawableStart="@drawable/lock"
-                    android:drawablePadding="@dimen/_12sdp"
-                    android:inputType="textPassword"
                     android:layout_marginTop="@dimen/_12sdp"
-                    android:singleLine="true"
-                    android:drawableEnd="@drawable/eye_closed"
-                    />
+                    app:endIconMode="password_toggle"
+                    app:hintEnabled="false">
+                    <EditText
+                        android:id="@+id/re_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        style="@style/Text_12_Normal_Black"
+                        android:background="@drawable/bg_text_box_un_select"
+                        android:hint="@string/repassword"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:textColorHint="@color/text_hint"
+                        android:drawableStart="@drawable/lock"
+                        android:drawablePadding="@dimen/_12sdp"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <TextView
                     android:id="@+id/mgs_er_re_password"
                     android:layout_width="wrap_content"
@@ -222,16 +231,16 @@
                     android:visibility="gone"/>
 
                 <TextView
+                    style="@style/Text_12_Bold_White"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    style="@style/Text_12_Bold_White"
-                    android:text="@string/signup"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_24sdp"
                     android:background="@drawable/bg_btn_radius_25"
                     android:gravity="center"
-                    android:padding="@dimen/_6sdp"
-                    android:layout_marginHorizontal="@dimen/_20sdp"
                     android:onClick="@{v -> f.onSignUpClick()}"
-                    android:layout_marginTop="@dimen/_24sdp"/>
+                    android:padding="@dimen/_6sdp"
+                    android:text="@string/signup" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

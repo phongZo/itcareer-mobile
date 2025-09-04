@@ -83,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 style="@style/Text_12_Normal_Black"
-                android:hint="Mật khẩu"
                 app:endIconMode="password_toggle"
                 app:hintEnabled="false"
                 android:layout_marginTop="30dp">
