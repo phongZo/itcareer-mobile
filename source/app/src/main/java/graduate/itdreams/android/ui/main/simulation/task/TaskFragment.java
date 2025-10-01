@@ -22,6 +22,7 @@ import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
 import graduate.itdreams.android.databinding.FragmentTaskBinding;
 import graduate.itdreams.android.di.component.FragmentComponent;
 import graduate.itdreams.android.ui.base.fragment.BaseFragment;
+import graduate.itdreams.android.ui.main.simulation.SimulationOverviewActivity;
 import graduate.itdreams.android.ui.main.simulation.SimulationOverviewViewModel;
 import graduate.itdreams.android.ui.main.taskdetail.TaskDetailActivity;
 
@@ -99,11 +100,6 @@ public class TaskFragment extends BaseFragment<FragmentTaskBinding, TaskViewMode
                 .beginTransaction()
                 .replace(R.id.tab_content_frame, fragment)
                 .commit();
-    }
-
-    public void onStartClick(){
-        Intent intent = new Intent(getContext(), TaskDetailActivity.class);
-        startActivity(intent);
     }
 
     @Override

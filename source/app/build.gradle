@@ -13,8 +13,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "BASE_URL", "\"https://itcareer-api.nd24.id.vn/\""
-        buildConfigField "String", "URL_FILE", "\"https://itcareer-media.nd24.id.vn/\""
+        buildConfigField "String", "BASE_URL", "\"https://api.itdreamcareer.io.vn/\""
+        buildConfigField "String", "URL_FILE", "\"https://media.itdreamcareer.io.vn/\""
         buildConfigField "String", "URL_LOAD_VIDEO", "\"https://itcareer-socket.nd24.id.vn/live\""
         javaCompileOptions {
             annotationProcessorOptions {

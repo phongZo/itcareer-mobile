@@ -18,9 +18,9 @@ import graduate.itdreams.android.ui.base.fragment.BaseFragment;
 
 public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTaskViewModel> {
 
-    public void loadSubTask(TaskResponse task, SubTaskResponse subTask) {
+    public void loadSubTask(TaskResponse task,SubTaskResponse subTask) {
         // Ví dụ đơn giản: show lên UI, bạn có thể dùng LiveData để binding
-        binding.content.setText(subTask.getContent());
+        binding.content.setText(subTask.getIntroduction());
 
     }
 

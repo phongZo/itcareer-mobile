@@ -25,7 +25,7 @@ public class TaskDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final OnSubTaskClickListener listener;
     private int selectedPosition = RecyclerView.NO_POSITION;
     private final List<TaskResponse> originalList = new ArrayList<>();
-    private final Set<String> expandedTaskTitles = new HashSet<>();
+    private final Set<Long> expandedTaskIds = new HashSet<>();
 
     public interface OnSubTaskClickListener {
         void onSubTaskClick(TaskResponse task, SubTaskResponse subTask);
@@ -46,9 +46,9 @@ public class TaskDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         displayList.clear();
         for (TaskResponse task : originalList) {
             displayList.add(task); // Parent
-//            if (expandedTaskTitles.contains(task.getTitle())) {
-//                displayList.addAll(task.getSubTasks()); // Sub items
-//            }
+            if (expandedTaskIds.contains(task.getId())) {
+                displayList.addAll(task.getSubTasks()); // Sub items
+            }
         }
         notifyDataSetChanged();
     }
@@ -78,14 +78,14 @@ public class TaskDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Object item = displayList.get(position);
 
-        holder.itemView.setBackgroundColor(
-                position == selectedPosition ? Color.LTGRAY : Color.TRANSPARENT
-        );
-
-        if (holder instanceof ParentViewHolder) {
-            ((ParentViewHolder) holder).bind((TaskResponse) item);
-        } else {
+        if (holder instanceof SubTaskViewHolder) {
+            holder.itemView.setBackgroundColor(
+                    position == selectedPosition ? Color.LTGRAY : Color.TRANSPARENT
+            );
             ((SubTaskViewHolder) holder).bind((SubTaskResponse) item);
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT); // Task cha không được chọn
+            ((ParentViewHolder) holder).bind((TaskResponse) item);
         }
     }
 
@@ -100,21 +100,22 @@ public class TaskDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         void bind(TaskResponse task) {
-//            text1.setText(task.getTitle());
-//
-//            boolean isExpanded = expandedTaskTitles.contains(task.getTitle());
-//            expandIcon.setImageResource(isExpanded ? R.drawable.ic_task_open : R.drawable.ic_task_close);
-//
-//            itemView.setOnClickListener(v -> {
-//                String title = task.getTitle();
-//                if (isExpanded) {
-//                    expandedTaskTitles.remove(title);
-//                } else {
-//                    expandedTaskTitles.add(title);
-//                }
-//                rebuildDisplayList();
-//            });
+            text1.setText(task.getTitle());
+
+            boolean isExpanded = expandedTaskIds.contains(task.getId());
+            expandIcon.setImageResource(isExpanded ? R.drawable.ic_task_open : R.drawable.ic_task_close);
+
+            itemView.setOnClickListener(v -> {
+                if (isExpanded) {
+                    expandedTaskIds.remove(task.getId());
+                } else {
+                    expandedTaskIds.add(task.getId());
+                }
+                rebuildDisplayList();
+            });
         }
+
+
     }
 
     class SubTaskViewHolder extends RecyclerView.ViewHolder {
@@ -128,18 +129,21 @@ public class TaskDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         void bind(SubTaskResponse subTask) {
-            text1.setText(subTask.getName());
-            icon.setImageResource(R.drawable.ic_fries_menu); // icon riêng cho subtask
+            text1.setText(subTask.getTitle());
+            icon.setImageResource(R.drawable.ic_fries_menu);
 
             itemView.setOnClickListener(v -> {
                 int oldPos = selectedPosition;
                 selectedPosition = getAdapterPosition();
-                notifyItemChanged(oldPos);
+
+                if (oldPos != RecyclerView.NO_POSITION) {
+                    notifyItemChanged(oldPos);
+                }
                 notifyItemChanged(selectedPosition);
 
-                // Tìm task cha của subtask
-                int position = getAdapterPosition();
-                for (int i = position - 1; i >= 0; i--) {
+                // Tìm cha
+                int pos = getAdapterPosition();
+                for (int i = pos - 1; i >= 0; i--) {
                     Object item = displayList.get(i);
                     if (item instanceof TaskResponse) {
                         listener.onSubTaskClick((TaskResponse) item, subTask);
@@ -148,5 +152,6 @@ public class TaskDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             });
         }
+
     }
 }

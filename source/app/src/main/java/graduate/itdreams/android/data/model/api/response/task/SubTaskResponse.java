@@ -1,14 +1,18 @@
 package graduate.itdreams.android.data.model.api.response.task;
 
+import java.util.List;
+
+import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
 import lombok.Data;
 
 @Data
 public class SubTaskResponse {
-    private String name;
+    private Long id;
     private String content;
-
-    public SubTaskResponse(String name, String content) {
-        this.name = name;
-        this.content = content;
-    }
+    private String description;
+    private String introduction;
+    private String name;
+    private String title;
+    private int kind;
+    private TaskResponse parent;
 }

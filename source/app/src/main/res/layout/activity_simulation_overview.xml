@@ -95,6 +95,7 @@
                                 android:paddingHorizontal="@dimen/_6sdp"
                                 android:paddingVertical="@dimen/_3sdp"
                                 android:text="Bắt đầu"
+                                android:onClick="@{v -> a.onStartClick()}"
                                 android:background="@drawable/bg_btn_green_radius_5"
                                 style="@style/Text_12_Bold_White" />
 
@@ -135,6 +136,7 @@
                         android:paddingHorizontal="@dimen/_6sdp"
                         android:paddingVertical="@dimen/_3sdp"
                         android:text="Bắt đầu"
+                        android:onClick="@{v -> a.onStartClick()}"
                         android:background="@drawable/bg_btn_green_radius_5"
                         style="@style/Text_14_Bold_White" />
                     <ImageView

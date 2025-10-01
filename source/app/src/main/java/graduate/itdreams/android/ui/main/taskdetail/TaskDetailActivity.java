@@ -66,6 +66,8 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
 
         viewModel = new ViewModelProvider(this).get(TaskDetailViewModel.class);
         viewModel.getTasks().observe(this, taskItems -> adapter.setTaskItems(taskItems));
+        Long simulationId = getIntent().getLongExtra("simulation_id", -1L);
+        viewModel.fetchListTask(simulationId);
     }
     @Override
     public int getLayoutId() {

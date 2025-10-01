@@ -23,10 +23,12 @@ import graduate.itdreams.android.databinding.ActivitySimulationOverviewBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
 import graduate.itdreams.android.ui.main.home.SimulationPagerAdapter;
+import graduate.itdreams.android.ui.main.taskdetail.TaskDetailActivity;
 
 
 public class SimulationOverviewActivity extends BaseActivity<ActivitySimulationOverviewBinding, SimulationOverviewViewModel> {
 
+    private long itemId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +36,11 @@ public class SimulationOverviewActivity extends BaseActivity<ActivitySimulationO
         viewBinding.setVm(viewModel);
         viewBinding.setLifecycleOwner(this);
         viewBinding.btnBack.setOnClickListener(v -> finish());
+        viewBinding.btnBackCollapsed.setOnClickListener(v -> finish());
 
         customTabLayout();
         setupToolbar();
-        long itemId = getIntent().getLongExtra("item_id", -1L);
+        itemId = getIntent().getLongExtra("item_id", -1L);
         viewModel.fetchSimulationDetail(itemId);
 
         viewModel.imageLiveData.observe(this, bitmap -> {
@@ -107,5 +110,10 @@ public class SimulationOverviewActivity extends BaseActivity<ActivitySimulationO
             public void onTabReselected(TabLayout.Tab tab) {}
         });
 
+    }
+    public void onStartClick(){
+        Intent intent = new Intent(this, TaskDetailActivity.class);
+        intent.putExtra("simulation_id", itemId );
+        startActivity(intent);
     }
 }

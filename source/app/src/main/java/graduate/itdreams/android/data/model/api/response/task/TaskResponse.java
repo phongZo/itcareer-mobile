@@ -15,4 +15,6 @@ public class TaskResponse {
     private SimulationDetailResponse simulation;
     private String title;
     private int kind;
+    private List<SubTaskResponse> subTasks;
+    private TaskResponse parent;
 }

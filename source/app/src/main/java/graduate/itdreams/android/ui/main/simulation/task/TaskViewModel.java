@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.data.Repository;
@@ -48,8 +49,11 @@ public class TaskViewModel extends BaseFragmentViewModel {
                         response -> {
                             hideLoading();
                             List<TaskResponse> taskList = response.getData().getContent();
+                            List<TaskResponse> filteredList = taskList.stream()
+                                    .filter(task -> task.getKind() == 1)
+                                    .collect(Collectors.toList());
 
-                            taskTabsLiveData.setValue(taskList);
+                            taskTabsLiveData.setValue(filteredList);
                         }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);

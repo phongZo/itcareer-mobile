@@ -35,7 +35,6 @@
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_5sdp"
                 android:text="Bắt đầu"
-                android:onClick="@{v -> f.onStartClick()}"
                 android:background="@drawable/bg_btn_green_radius_5"
                 style="@style/Text_14_Bold_White" />
         </LinearLayout>
