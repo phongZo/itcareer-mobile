@@ -14,5 +14,6 @@ public class SubTaskResponse {
     private String name;
     private String title;
     private int kind;
+    private String filePath;
     private TaskResponse parent;
 }

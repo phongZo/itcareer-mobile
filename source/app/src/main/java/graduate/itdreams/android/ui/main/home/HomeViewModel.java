@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,7 @@ public class HomeViewModel extends BaseFragmentViewModel {
     public void loadImageForItem(Long itemId, String url) {
         if (bitmapCache.containsKey(itemId)) return; // đã có thì không tải lại
 
-        compositeDisposable.add(repository.getUploadApiService().loadImage(url)
+        compositeDisposable.add(repository.getUploadApiService().loadFile(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(responseBody -> {

@@ -12,15 +12,12 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import graduate.itdreams.android.MVVMApplication;
-import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.Repository;
 import graduate.itdreams.android.ui.base.fragment.BaseFragmentViewModel;
 import graduate.itdreams.android.utils.NetworkUtils;
-import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import timber.log.Timber;
 
@@ -68,7 +65,7 @@ public class AccountViewModel extends BaseFragmentViewModel {
     }
 
     public void loadAvatar(String url){
-        compositeDisposable.add(repository.getUploadApiService().loadImage(url)
+        compositeDisposable.add(repository.getUploadApiService().loadFile(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( responseBody ->  {

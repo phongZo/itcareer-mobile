@@ -15,6 +15,7 @@ import graduate.itdreams.android.ui.main.account.EditProfileViewModel;
 import graduate.itdreams.android.ui.main.login.LoginViewModel;
 import graduate.itdreams.android.ui.main.register.RegisterFlowViewModel;
 import graduate.itdreams.android.ui.main.simulation.SimulationOverviewViewModel;
+import graduate.itdreams.android.ui.main.taskdetail.PdfViewModel;
 import graduate.itdreams.android.ui.main.taskdetail.TaskDetailViewModel;
 import graduate.itdreams.android.utils.GetInfo;
 
@@ -91,5 +92,13 @@ public class ActivityModule {
         Supplier<TaskDetailViewModel> supplier = () -> new TaskDetailViewModel(repository, (MVVMApplication)application);
         ViewModelProviderFactory<TaskDetailViewModel> factory = new ViewModelProviderFactory<>(TaskDetailViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(TaskDetailViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    PdfViewModel providePdfViewModel(Repository repository, Context application) {
+        Supplier<PdfViewModel> supplier = () -> new PdfViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<PdfViewModel> factory = new ViewModelProviderFactory<>(PdfViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(PdfViewModel.class);
     }
 }

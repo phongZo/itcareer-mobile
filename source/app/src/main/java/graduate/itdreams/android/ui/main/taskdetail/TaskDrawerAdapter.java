@@ -154,4 +154,25 @@ public class TaskDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
     }
+    public void selectDefaultSubTask(TaskResponse task, SubTaskResponse subTask) {
+        // Mở task nếu chưa mở
+        if (!expandedTaskIds.contains(task.getId())) {
+            expandedTaskIds.add(task.getId());
+            rebuildDisplayList();
+        }
+
+        // Tìm position của subTask trong displayList
+        for (int i = 0; i < displayList.size(); i++) {
+            Object item = displayList.get(i);
+            if (item instanceof SubTaskResponse) {
+                SubTaskResponse s = (SubTaskResponse) item;
+                if (s.getId() == subTask.getId()) {
+                    selectedPosition = i;
+                    notifyItemChanged(i);
+                    break;
+                }
+            }
+        }
+    }
+
 }

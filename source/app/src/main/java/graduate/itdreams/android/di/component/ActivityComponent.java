@@ -9,6 +9,7 @@ import graduate.itdreams.android.ui.main.account.EditProfileActivity;
 import graduate.itdreams.android.ui.main.login.LoginActivity;
 import graduate.itdreams.android.ui.main.register.RegisterFlowActivity;
 import graduate.itdreams.android.ui.main.simulation.SimulationOverviewActivity;
+import graduate.itdreams.android.ui.main.taskdetail.PdfActivity;
 import graduate.itdreams.android.ui.main.taskdetail.TaskDetailActivity;
 
 @ActivityScope
@@ -20,6 +21,7 @@ public interface ActivityComponent {
     void inject(EditProfileActivity activity);
     void inject(SimulationOverviewActivity activity);
     void inject(TaskDetailActivity activity);
+    void inject(PdfActivity activity);
 
 
 }

@@ -10,6 +10,7 @@ import graduate.itdreams.android.data.model.api.response.simulation.SimulationDe
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.data.model.api.response.student.SignUpResponse;
 import graduate.itdreams.android.data.model.api.response.file.UploadResponse;
+import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
 import io.reactivex.rxjava3.core.Observable;
 import graduate.itdreams.android.data.model.api.ResponseWrapper;
@@ -51,7 +52,7 @@ public interface ApiService {
 
 //  IMAGE
     @GET("v1/file/download{file}")
-    Observable<ResponseBody> loadImage(@Path(value = "file", encoded = true) String file);
+    Observable<ResponseBody> loadFile(@Path(value = "file", encoded = true) String file);
     @Multipart
     @POST("v1/file/upload")
     Observable<ResponseWrapper<UploadResponse>> uploadImage(
@@ -78,4 +79,8 @@ public interface ApiService {
 //  TASK
     @GET("/v1/task/student-list")
     Observable<ResponseWrapper<ResponseListObj<TaskResponse>>> getTaskList(@Query("simulationId") long simulationId);
+
+//  SUBTASK
+    @GET("/v1/task/student-get/{id}")
+    Observable<ResponseWrapper<SubTaskResponse>> getSubTaskDetail(@Path("id") Long id);
 }

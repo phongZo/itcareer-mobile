@@ -2,10 +2,8 @@ package graduate.itdreams.android.ui.main.account;
 
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -22,8 +20,6 @@ import graduate.itdreams.android.utils.ImageUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import graduate.itdreams.android.MVVMApplication;
@@ -34,7 +30,6 @@ import graduate.itdreams.android.utils.NetworkUtils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import timber.log.Timber;
 
@@ -82,7 +77,7 @@ public class EditProfileViewModel extends BaseViewModel {
                         }));
     }
     public void loadAvatar(String url){
-        compositeDisposable.add(repository.getUploadApiService().loadImage(url)
+        compositeDisposable.add(repository.getUploadApiService().loadFile(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( responseBody ->  {
@@ -166,7 +161,7 @@ public class EditProfileViewModel extends BaseViewModel {
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
         showLoading();
-        compositeDisposable.add(repository.getUploadApiService().uploadImage(type, body)
+        compositeDisposable.add(repository.getUploadApiService().uploadFile(type, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

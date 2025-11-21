@@ -7,19 +7,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.InputStream;
-import java.util.List;
 
 import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.data.Repository;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
-import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.ui.base.activity.BaseViewModel;
 import graduate.itdreams.android.utils.ImageUtils;
 import graduate.itdreams.android.utils.NetworkUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -83,7 +80,7 @@ public class SimulationOverviewViewModel extends BaseViewModel {
 
 
     public void loadImage(String url){
-        compositeDisposable.add(repository.getUploadApiService().loadImage(url)
+        compositeDisposable.add(repository.getUploadApiService().loadFile(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( responseBody ->  {
