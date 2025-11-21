@@ -15,13 +15,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/_5sdp"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:text="@{vm.subTaskDetail.title}"
+            android:paddingBottom="@dimen/_10sdp"
+            style="@style/Text_24_Bold_Black"
+            android:layout_gravity="center"/>
         <TextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="aaa"/>
+            android:text="@{vm.subTaskDetail.description}"
+            style="@style/Text_12_Normal_Black"
+            android:layout_gravity="center"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            />
         <LinearLayout
+            android:id="@+id/documentButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
