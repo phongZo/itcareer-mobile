@@ -43,23 +43,35 @@
             android:id="@+id/documentButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
             android:padding="@dimen/_10sdp">
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tài liệu"
+                style="@style/Text_16_Bold_Black"/>
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
-                android:text="Xem file"
+                android:src="@drawable/ic_pdf"
                 android:onClick="@{v->f.viewFileClick()}"
-                android:background="@drawable/bg_btn_radius_25"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:padding="@dimen/_5sdp"
-                android:text="Tải file"
-                android:background="@drawable/bg_btn_radius_25"/>
+                />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutQuestionFileAndText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvQuestionFileAndText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
 

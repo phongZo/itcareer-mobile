@@ -35,40 +35,18 @@
                     app:iconifiedByDefault="false"/>
             </FrameLayout>
 
-            <LinearLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefresh"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gợi ý mô phỏng phù hợp"
-                    style="@style/Text_16_Bold_Black"
-                    android:layout_margin="@dimen/_12sdp"/>
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Xem tất cả"
-                    android:layout_gravity="center"
-                    android:textColor="@color/text_app"
-                    android:layout_margin="@dimen/_12sdp"/>
-            </LinearLayout>
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_450sdp" />
+                android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/indicatorLayout"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         </LinearLayout>
 

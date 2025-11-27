@@ -6,10 +6,13 @@ import graduate.itdreams.android.data.model.api.ResponseListObj;
 import graduate.itdreams.android.data.model.api.request.student.ResetOtpRequest;
 import graduate.itdreams.android.data.model.api.request.student.StudentUpdateProfileRequest;
 import graduate.itdreams.android.data.model.api.request.student.VerifyOtpRequest;
+import graduate.itdreams.android.data.model.api.response.question.TaskQuestionProgressResponse;
+import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.data.model.api.response.student.SignUpResponse;
 import graduate.itdreams.android.data.model.api.response.file.UploadResponse;
+import graduate.itdreams.android.data.model.api.response.task.SubTaskProgressResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
 import io.reactivex.rxjava3.core.Observable;
@@ -83,4 +86,19 @@ public interface ApiService {
 //  SUBTASK
     @GET("/v1/task/student-get/{id}")
     Observable<ResponseWrapper<SubTaskResponse>> getSubTaskDetail(@Path("id") Long id);
+
+    @GET("/v1/subtask-progress/student-get/{id}")
+    Observable<ResponseWrapper<SubTaskProgressResponse>> createSubTaskProgress(@Path("id") Long id);
+
+//  TASK QUESTION
+    @GET("/v1/task-question-progress/student-list")
+    Observable<ResponseWrapper<ResponseListObj<TaskQuestionProgressResponse>>> getTaskQuestionProgressList(
+            @Query("studentSubTaskProgressId") long studentSubTaskProgressId,
+            @Query("taskId") long taskId
+    );
+    @GET("/v1/task-question/student-list")
+    Observable<ResponseWrapper<ResponseListObj<TaskQuestionResponse>>> getTaskQuestionList(
+            @Query("simulationId") long simulationId,
+            @Query("taskId") long taskId
+    );
 }

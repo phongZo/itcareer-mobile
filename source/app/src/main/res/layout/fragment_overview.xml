@@ -41,6 +41,7 @@ Tata Insights and Quants (Tata iQ) is the Tata Group’s advanced analytics and 
             <FrameLayout
                 android:id="@+id/video_container"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="@dimen/_200sdp">
 
                 <com.google.android.exoplayer2.ui.PlayerView

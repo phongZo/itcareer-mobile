@@ -17,7 +17,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:strokeColor="@color/gray"
             app:strokeWidth="1dp"
             app:shapeAppearanceOverlay="@style/RoundedImageView"/>
@@ -45,10 +45,10 @@
                 android:maxLines="1"
                 android:ellipsize="end"/>
             <LinearLayout
+                android:id="@+id/layoutProgress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:visibility="invisible"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,6 +71,7 @@
                     android:progressTint="@color/bg_btn"
                     android:progressBackgroundTint="@color/bg_btn"/>
                 <TextView
+                    android:id="@+id/tvProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text_10_Normal_Black"

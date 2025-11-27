@@ -168,6 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_12ssp"
+                android:visibility="gone"
                 android:text="Trải nghiệm không cần đăng nhập"
                 android:textColor="@color/text_app"
                 android:layout_marginStart="@dimen/_12sdp"

@@ -3,6 +3,7 @@ package graduate.itdreams.android.data.model.api.response.task;
 import java.util.List;
 
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
+import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import lombok.Data;
 
 @Data

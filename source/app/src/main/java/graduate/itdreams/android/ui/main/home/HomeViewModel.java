@@ -34,6 +34,8 @@ public class HomeViewModel extends BaseFragmentViewModel {
     public LiveData<List<SimulationResponse>> getPostList() {
         return _simulationList;
     }
+    private MutableLiveData<Boolean> _forceLogout = new MutableLiveData<>();
+    public LiveData<Boolean> forceLogout = _forceLogout;
 
     public HomeViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -62,12 +64,25 @@ public class HomeViewModel extends BaseFragmentViewModel {
                         }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);
+                            if (throwable instanceof HttpException) {
+                                int code = ((HttpException) throwable).code();
+
+                                if (code == 401 || code == 403) {
+                                    // Token invalid / expired → force logout
+                                    _forceLogout.setValue(true);
+                                    return;
+                                }
+                            }
                             if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
                                 HttpException httpException = (HttpException) throwable;
                                 if (httpException.code() == 400) {
                                 }
                             }
                         }));
+    }
+    public void logout(){
+        repository.getSharedPreferences().setToken(null);
+        repository.getSharedPreferences().saveAccessTokenObject(null);
     }
     private final Map<Long, Bitmap> bitmapCache = new HashMap<>();
 

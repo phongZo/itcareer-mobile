@@ -11,5 +11,6 @@ public class SimulationResponse {
     private EducatorResponse educator;
     private String imagePath;
     private int level;
+    private Float percent;
     private String totalEstimatedTime;
 }

@@ -31,6 +31,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
     private DrawerLayout drawerLayout ;
     private NavigationView navigationView ;
     private TaskDrawerAdapter adapter;
+    private Long simulationId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
     private void initViewModel() {
         viewModel = new ViewModelProvider(this).get(TaskDetailViewModel.class);
 
-        Long simulationId = getIntent().getLongExtra("simulation_id", -1L);
+        simulationId = getIntent().getLongExtra("simulation_id", -1L);
         viewModel.fetchListTask(simulationId);
 
         viewModel.getTasks().observe(this, taskItems -> {
@@ -70,7 +71,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         SubTaskFragment fragment = (SubTaskFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.tab_content_frame);
         if (fragment != null) {
-            fragment.loadSubTask(task, subTask);
+            fragment.loadSubTask(simulationId, subTask);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
     }
@@ -98,7 +99,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         SubTaskFragment fragment = (SubTaskFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.tab_content_frame);
         if (fragment != null) {
-            fragment.loadSubTask(firstTask, firstSubTask);
+            fragment.loadSubTask(simulationId, firstSubTask);
         }
 
         adapter.selectDefaultSubTask(firstTask, firstSubTask);

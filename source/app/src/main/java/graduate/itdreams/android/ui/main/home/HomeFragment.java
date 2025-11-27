@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import graduate.itdreams.android.data.model.api.response.simulation.SimulationRe
 import graduate.itdreams.android.databinding.FragmentHomeBinding;
 import graduate.itdreams.android.di.component.FragmentComponent;
 import graduate.itdreams.android.ui.base.fragment.BaseFragment;
+import graduate.itdreams.android.ui.main.login.LoginActivity;
 import graduate.itdreams.android.ui.main.simulation.SimulationOverviewActivity;
 
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel> {
@@ -40,6 +42,16 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         customBtnSearch();
 
         loadJobs();
+        viewModel.forceLogout.observe(this, isLogout -> {
+            if (Boolean.TRUE.equals(isLogout)) {
+                viewModel.logout();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            viewModel.fetchSimulationList(); // gọi lại API
+        });
 
         return binding.getRoot();
     }
@@ -48,29 +60,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         viewModel.getPostList().observe(getViewLifecycleOwner(), postList -> {
             if (postList == null || postList.isEmpty()) return;
 
-            // Phân trang mỗi trang 4 item
-            List<List<SimulationResponse>> pages = new ArrayList<>();
-            for (int i = 0; i < postList.size(); i += 4) {
-                pages.add(postList.subList(i, Math.min(i + 4, postList.size())));
-            }
-
-            SimulationPagerAdapter adapter = new SimulationPagerAdapter(pages, viewModel, item -> {
+            SimulationAdapter adapter = new SimulationAdapter(viewModel, item -> {
                 Intent intent = new Intent(getContext(), SimulationOverviewActivity.class);
                 intent.putExtra("item_id", item);
                 startActivity(intent);
             });
-
-            binding.viewPager.setAdapter(adapter);
-            setupIndicator(pages.size());
-            setCurrentIndicator(0);
-
-            binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                @Override
-                public void onPageSelected(int position) {
-                    super.onPageSelected(position);
-                    setCurrentIndicator(position);
-                }
-            });
+            adapter.setData(postList);
+            binding.recycleview.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.recycleview.setAdapter(adapter);
         });
 
     }
@@ -85,30 +82,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     }
 
-    private void setupIndicator(int count) {
-        binding.indicatorLayout.removeAllViews();
-        for (int i = 0; i < count; i++) {
-            View dot = new View(requireContext());
-            int size = (int) getResources().getDimension(R.dimen._8sdp);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
-            params.setMargins(8, 0, 8, 0);
-            dot.setLayoutParams(params);
-            dot.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.indicator_unactive));
-            binding.indicatorLayout.addView(dot);
-        }
-    }
-
-
-    private void setCurrentIndicator(int index) {
-        int childCount = binding.indicatorLayout.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View dot = binding.indicatorLayout.getChildAt(i);
-            int drawableId = (i == index)
-                    ? R.drawable.indicator_active
-                    : R.drawable.indicator_unactive;
-            dot.setBackground(ContextCompat.getDrawable(requireContext(), drawableId));
-        }
-    }
     @Override
     public int getBindingVariable() {
         return BR.vm;
