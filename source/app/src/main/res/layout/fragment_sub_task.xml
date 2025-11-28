@@ -63,7 +63,13 @@
             android:id="@+id/layoutQuestionFileAndText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp">
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kiểm tra kiến thức"
+                style="@style/Text_16_Bold_Black"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvQuestionFileAndText"
                 android:layout_width="match_parent"
@@ -71,8 +77,45 @@
                 android:nestedScrollingEnabled="false"
                 />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutQuestionQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kiểm tra kiến thức"
+                style="@style/Text_16_Bold_Black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvQuestionQuiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                />
+            <TextView
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiếp tục"
+                android:background="@drawable/bg_btn_radius_25"
+                style="@style/Text_12_Bold_White"
+                android:paddingVertical="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_10sdp"/>
+        </LinearLayout>
 
-
+        <TextView
+            android:id="@+id/btnComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hoàn thành"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_btn_radius_25"
+            style="@style/Text_12_Bold_White"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_10sdp"/>
     </LinearLayout>
 
 

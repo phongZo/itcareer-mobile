@@ -21,14 +21,15 @@ import graduate.itdreams.android.data.model.api.response.ItemTitleContentRespons
 import graduate.itdreams.android.data.model.api.response.question.OptionItem;
 import graduate.itdreams.android.data.model.api.response.question.QuestionResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
-import graduate.itdreams.android.databinding.ItemQuestionBinding;
 import graduate.itdreams.android.databinding.ItemQuestionQuizBinding;
 
 public class QuestionQuizAdapter extends RecyclerView.Adapter<QuestionQuizAdapter.ViewHolder> {
     private List<TaskQuestionResponse> questionList = new ArrayList<>();
+    private int currentIndex = 0;
 
-    public QuestionQuizAdapter(List<TaskQuestionResponse> questionList) {
+    public QuestionQuizAdapter(List<TaskQuestionResponse> questionList, int currentIndex) {
         this.questionList = questionList;
+        this.currentIndex = currentIndex;
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ItemQuestionQuizBinding binding;
@@ -38,6 +39,10 @@ public class QuestionQuizAdapter extends RecyclerView.Adapter<QuestionQuizAdapte
             this.binding = binding;
         }
     }
+    public void setCurrentIndex(int index) {
+        this.currentIndex = index;
+    }
+
     @NonNull
     @Override
     public QuestionQuizAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,7 +53,8 @@ public class QuestionQuizAdapter extends RecyclerView.Adapter<QuestionQuizAdapte
 
     @Override
     public void onBindViewHolder(QuestionQuizAdapter.ViewHolder holder, int position) {
-        TaskQuestionResponse item = questionList.get(position);
+        TaskQuestionResponse item = questionList.get(currentIndex);
+        holder.binding.numberQuestion.setText("Câu " + position + "/" + questionList.size());
         holder.binding.tvQuestion.setText(item.getQuestion());
         RadioGroup rg = holder.binding.rgOptions;
         rg.removeAllViews(); // clear nếu RecyclerView tái sử dụng
@@ -62,7 +68,6 @@ public class QuestionQuizAdapter extends RecyclerView.Adapter<QuestionQuizAdapte
         for (OptionItem option : optionList) {
             RadioButton rb = new RadioButton(holder.itemView.getContext());
             rb.setText(option.getOption());
-            rb.setEnabled(!option.isAnswer());
             rb.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
             rb.setTextColor(Color.BLACK);
             rg.addView(rb);
@@ -90,7 +95,7 @@ public class QuestionQuizAdapter extends RecyclerView.Adapter<QuestionQuizAdapte
 
     @Override
     public int getItemCount() {
-        return questionList != null ? questionList.size() : 0;
+        return questionList != null ? 1 : 0;
     }
 
 }

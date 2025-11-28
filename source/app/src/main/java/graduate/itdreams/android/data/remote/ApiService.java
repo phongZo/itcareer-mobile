@@ -6,6 +6,8 @@ import graduate.itdreams.android.data.model.api.ResponseListObj;
 import graduate.itdreams.android.data.model.api.request.student.ResetOtpRequest;
 import graduate.itdreams.android.data.model.api.request.student.StudentUpdateProfileRequest;
 import graduate.itdreams.android.data.model.api.request.student.VerifyOtpRequest;
+import graduate.itdreams.android.data.model.api.request.task.CompleteTaskRequest;
+import graduate.itdreams.android.data.model.api.request.task.TaskQuestionProgressRequest;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionProgressResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
@@ -89,6 +91,11 @@ public interface ApiService {
 
     @GET("/v1/subtask-progress/student-get/{id}")
     Observable<ResponseWrapper<SubTaskProgressResponse>> createSubTaskProgress(@Path("id") Long id);
+
+    @PUT("/v1/subtask-progress/complete")
+    Observable<ResponseWrapper> completeTask(@Body CompleteTaskRequest request);
+    @POST("/v1/task-question-progress/create")
+    Observable<ResponseWrapper> submitQuestion(@Body TaskQuestionProgressRequest request);
 
 //  TASK QUESTION
     @GET("/v1/task-question-progress/student-list")

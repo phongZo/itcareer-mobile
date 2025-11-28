@@ -93,7 +93,7 @@ public class SimulationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 binding.layoutProgress.setVisibility(View.INVISIBLE);
             }else {
                 binding.progressBar.setProgress(item.getPercent().intValue());
-                binding.tvProgress.setText(String.format("%.1f%%", item.getPercent()) + "%");
+                binding.tvProgress.setText(String.format("%.1f%%", item.getPercent()));
             }
 
             Bitmap bitmap = viewModel.getBitmapFromCache(item.getId());
