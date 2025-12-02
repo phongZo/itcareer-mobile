@@ -25,6 +25,8 @@ import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
 import graduate.itdreams.android.databinding.ActivityTaskDetailBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
+import graduate.itdreams.android.ui.main.simulation.rate.RateFragment;
+import graduate.itdreams.android.ui.main.taskdetail.review.ReviewSimulationFragment;
 
 public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,TaskDetailViewModel> {
     private ActionBarDrawerToggle toggle;
@@ -64,8 +66,22 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         RecyclerView recyclerView = viewBinding.recyclerTaskList;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new TaskDrawerAdapter((task, subTask) -> onSubTaskSelected(task, subTask));
+        adapter = new TaskDrawerAdapter(
+                (task, subTask) -> onSubTaskSelected(task, subTask),
+                () -> onRatingClick());
         recyclerView.setAdapter(adapter);
+    }
+    private void onRatingClick(){
+        ReviewSimulationFragment fragment = new ReviewSimulationFragment();
+        Bundle args = new Bundle();
+        args.putLong("simulation_id", simulationId); // đặt id vào bundle
+        fragment.setArguments(args);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.tab_content_frame, fragment)
+                .addToBackStack(null)
+                .commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
     }
     private void onSubTaskSelected(TaskResponse task, SubTaskResponse subTask) {
         SubTaskFragment fragment = (SubTaskFragment) getSupportFragmentManager()

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
+import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.databinding.FragmentRateBinding;
 import graduate.itdreams.android.di.component.FragmentComponent;
 import graduate.itdreams.android.ui.base.fragment.BaseFragment;
@@ -18,6 +19,9 @@ import graduate.itdreams.android.ui.base.fragment.BaseFragment;
 
 public class RateFragment extends BaseFragment<FragmentRateBinding, RateViewModel> {
 
+    public void loadRating() {
+
+    }
 
     @Override
     public int getBindingVariable() {
@@ -34,8 +38,6 @@ public class RateFragment extends BaseFragment<FragmentRateBinding, RateViewMode
         binding.setF(this);
         binding.setVm(viewModel);
         RateAdapter adapter = new RateAdapter();
-        binding.rcvRate.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rcvRate.setAdapter(adapter);
     }
 
     @Override

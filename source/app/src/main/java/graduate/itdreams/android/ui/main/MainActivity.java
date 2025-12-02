@@ -15,6 +15,7 @@ import graduate.itdreams.android.ui.base.activity.BaseActivity;
 import graduate.itdreams.android.ui.main.account.AccountFragment;
 import graduate.itdreams.android.ui.main.account.AccountUnLoginFragment;
 
+import graduate.itdreams.android.ui.main.achievement.AchievementFragment;
 import graduate.itdreams.android.ui.main.home.HomeFragment;
 import graduate.itdreams.android.ui.main.login.LoginActivity;
 import graduate.itdreams.android.ui.main.notification.NotificationFragment;
@@ -25,13 +26,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private FragmentManager fm;
     private HomeFragment homeFragment;
     private NotificationFragment cvProfileFragment;
-    private NotificationFragment topCommentFragment;
+    private AchievementFragment topCommentFragment;
     private NotificationFragment notificationFragment;
     private AccountFragment accountFragment;
     private AccountUnLoginFragment accountUnLoginFragment;
     private static final String HOME = "HOME";
     private static final String CV_PROFILE = "CV_PROFILE";
-    private static final String TOP_COMMENT = "TOP_COMMENT";
+    private static final String ACHIEVEMENT = "TOP_COMMENT";
     private static final String NOTIFICATION = "NOTIFICATION";
     private static final String ACCOUNT = "ACCOUNT";
     private static final String ACCOUNT_UN_LOGIN = "ACCOUNT_UN_LOGIN";
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                     handleFragment(HOME);
                     return true;
                 case R.id.top_comment:
-                    handleFragment(TOP_COMMENT);
+                    handleFragment(ACHIEVEMENT);
                     return true;
                 case R.id.notification:
                     handleFragment(NOTIFICATION);
@@ -94,7 +95,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
         if (homeFragment == null) homeFragment = new HomeFragment();
         if (cvProfileFragment == null) cvProfileFragment = new NotificationFragment();
-        if (topCommentFragment == null) topCommentFragment = new NotificationFragment();
+        if (topCommentFragment == null) topCommentFragment = new AchievementFragment();
         if (notificationFragment == null) notificationFragment = new NotificationFragment();
         if (accountFragment == null) accountFragment = new AccountFragment();
         if (accountUnLoginFragment == null) accountUnLoginFragment = new AccountUnLoginFragment();
@@ -107,7 +108,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             case CV_PROFILE:
                 target = cvProfileFragment;
                 break;
-            case TOP_COMMENT:
+            case ACHIEVEMENT:
                 target = topCommentFragment;
                 break;
             case NOTIFICATION:

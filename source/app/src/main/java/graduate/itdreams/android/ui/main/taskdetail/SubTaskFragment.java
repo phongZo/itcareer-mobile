@@ -64,6 +64,9 @@ public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTask
         viewModel.getTaskQuestion().observe(getViewLifecycleOwner(), responseTaskQuestion -> {
             if(responseTaskQuestion != null){
                 if(responseTaskQuestion.get(0).getQuestionType() != 3){
+                    binding.layoutQuestionFileAndText.setVisibility(View.VISIBLE);
+                    binding.btnComplete.setVisibility(View.VISIBLE);
+                    binding.layoutQuestionQuiz.setVisibility(View.GONE);
                     QuestionItemAdapter questionItemAdapter = new QuestionItemAdapter(responseTaskQuestion, (item, position, callback) -> {
                         currentUploadCallback = callback;
                         // Mở file picker ở đây
@@ -80,7 +83,13 @@ public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTask
                     binding.rcvQuestionFileAndText.setLayoutManager(new LinearLayoutManager(requireContext()));
                     binding.rcvQuestionFileAndText.setAdapter(questionItemAdapter);
                 }else {
-                    QuestionQuizAdapter adapter = new QuestionQuizAdapter(responseTaskQuestion, currentIndex);
+                    binding.layoutQuestionQuiz.setVisibility(View.VISIBLE);
+                    binding.btnComplete.setVisibility(View.VISIBLE);
+                    binding.layoutQuestionFileAndText.setVisibility(View.GONE);
+                    QuestionQuizAdapter adapter = new QuestionQuizAdapter(responseTaskQuestion, currentIndex, isCorrect -> {
+                        binding.btnNext.setEnabled(true);
+                        submitQuizClick(responseTaskQuestion.get(currentIndex).getId(), isCorrect);
+                    });
                     binding.rcvQuestionQuiz.setAdapter(adapter);
                     binding.rcvQuestionQuiz.setLayoutManager(new LinearLayoutManager(requireContext()));
                     binding.btnNext.setOnClickListener(v -> {
@@ -101,12 +110,21 @@ public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTask
         });
 
     }
+    private void submitQuizClick(Long taskQuestionId, Boolean isCorrect){
+        TaskQuestionProgressRequest request = new TaskQuestionProgressRequest();
+        request.setAnswer("câu trả lời trắc nghiệm");
+        request.setStudentSubTaskProgressId(subTaskProgress.getId());
+        request.setTaskQuestionId(taskQuestionId);
+        request.setIsCorrect(isCorrect);
+        viewModel.submitQuestion(request);
+    }
     private void submitTextClick(Long taskQuestionId, String answer){
         TaskQuestionProgressRequest request = new TaskQuestionProgressRequest();
         request.setAnswer(answer);
         request.setStudentSubTaskProgressId(subTaskProgress.getId());
         request.setTaskQuestionId(taskQuestionId);
         request.setIsCorrect(true);
+        viewModel.submitQuestion(request);
     }
     private void submitFileClick(Long taskQuestionId, File file){
         TaskQuestionProgressRequest request = new TaskQuestionProgressRequest();

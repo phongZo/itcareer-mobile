@@ -30,6 +30,35 @@ public class TaskDetailViewModel extends BaseViewModel {
     public TaskDetailViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
+    public void fetchSimulationDetail(Long id) {
+        showLoading();
+        compositeDisposable.add(repository.getApiService().getSimulationDetail(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwable ->
+                        throwable.flatMap((Function<Throwable, ObservableSource<?>>) throwable1 -> {
+                            if (NetworkUtils.checkNetworkError(throwable1)) {
+                                hideLoading();
+                                return application.showDialogNoInternetAccess();
+                            } else {
+                                return Observable.error(throwable1);
+                            }
+                        })
+                )
+                .subscribe(
+                        response -> {
+                            hideLoading();
+
+                        }, throwable -> {
+                            hideLoading();
+                            Timber.e(throwable);
+                            if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
+                                HttpException httpException = (HttpException) throwable;
+                                if (httpException.code() == 400) {
+                                }
+                            }
+                        }));
+    }
     public void fetchListTask(Long simulationId) {
         showLoading();
         compositeDisposable.add(repository.getApiService().getTaskList(simulationId)

@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5sdp"
         android:orientation="vertical">
         <TextView
@@ -64,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
+            android:visibility="gone"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
@@ -82,27 +83,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
+            android:visibility="gone"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Kiểm tra kiến thức"
                 style="@style/Text_16_Bold_Black"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvQuestionQuiz"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                />
-            <TextView
-                android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tiếp tục"
-                android:background="@drawable/bg_btn_radius_25"
-                style="@style/Text_12_Bold_White"
-                android:paddingVertical="@dimen/_5sdp"
-                android:paddingHorizontal="@dimen/_10sdp"/>
+                android:layout_height="@dimen/_200sdp"
+                android:background="@drawable/bg_quiz"
+                android:padding="@dimen/_5sdp"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvQuestionQuiz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    />
+                <TextView
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tiếp tục"
+                    android:enabled="false"
+                    android:background="@drawable/bg_btn_radius_25"
+                    style="@style/Text_12_Bold_White"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -115,6 +126,7 @@
             style="@style/Text_12_Bold_White"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingVertical="@dimen/_5sdp"
+            android:visibility="gone"
             android:paddingHorizontal="@dimen/_10sdp"/>
     </LinearLayout>
 

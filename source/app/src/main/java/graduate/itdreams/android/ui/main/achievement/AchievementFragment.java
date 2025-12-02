@@ -1,32 +1,37 @@
-package graduate.itdreams.android.ui.main.home;
+package graduate.itdreams.android.ui.main.achievement;
+
+import static com.facebook.FacebookSdk.getCacheDir;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.viewpager2.widget.ViewPager2;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import graduate.itdreams.android.BR;
 import graduate.itdreams.android.R;
-import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
-import graduate.itdreams.android.databinding.FragmentHomeBinding;
+import graduate.itdreams.android.data.model.api.request.achievement.UpdateCertificateRequest;
+import graduate.itdreams.android.data.model.api.request.achievement.UploadCertificateRequest;
+import graduate.itdreams.android.databinding.FragmentAchievementBinding;
 import graduate.itdreams.android.di.component.FragmentComponent;
 import graduate.itdreams.android.ui.base.fragment.BaseFragment;
+import graduate.itdreams.android.ui.main.home.SimulationAdapter;
 import graduate.itdreams.android.ui.main.login.LoginActivity;
 import graduate.itdreams.android.ui.main.simulation.SimulationOverviewActivity;
+import graduate.itdreams.android.ui.main.taskdetail.PdfActivity;
 
-public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel> {
+public class AchievementFragment extends BaseFragment<FragmentAchievementBinding, AchievementViewModel> {
     @Override
     protected void performDataBinding() {
         binding.setF(this);
@@ -50,20 +55,33 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             }
         });
         binding.swipeRefresh.setOnRefreshListener(() -> {
-            viewModel.fetchSimulationList(); // gọi lại API
+            viewModel.fetchAchievementList(); // gọi lại API
         });
 
         return binding.getRoot();
     }
     private void loadJobs() {
-        viewModel.fetchSimulationList();
+        viewModel.fetchAchievementList();
         viewModel.getPostList().observe(getViewLifecycleOwner(), postList -> {
             if (postList == null || postList.isEmpty()) return;
 
-            SimulationAdapter adapter = new SimulationAdapter(viewModel, item -> {
-                Intent intent = new Intent(getContext(), SimulationOverviewActivity.class);
-                intent.putExtra("item_id", item);
-                startActivity(intent);
+            AchievementAdapter adapter = new AchievementAdapter(viewModel, item -> {
+                if(item.getFilePath() == null){
+                    UploadCertificateRequest request = new UploadCertificateRequest();
+                    request.setSimulationName(item.getSimulation().getTitle());
+                    request.setUsername("thuylinh12345");
+                    viewModel.uploadCertificate(request);
+                    viewModel.getCertificateUrl().observe(getViewLifecycleOwner(), url ->{
+                        UpdateCertificateRequest updateCertificateRequest = new UpdateCertificateRequest();
+                        updateCertificateRequest.setId(item.getId());
+                        updateCertificateRequest.setFilePath(url);
+                        viewModel.updateAchievement(updateCertificateRequest);
+                        loadCertificate(url);
+                    });
+                }else {
+                    loadCertificate(item.getFilePath());
+                }
+
             });
             adapter.setData(postList);
             binding.recycleview.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -73,6 +91,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     }
 
+    private void loadCertificate(String pdfUrl){
+        if (pdfUrl != null) {
+            Intent intent = new Intent(getContext(), PdfActivity.class);
+            intent.putExtra("url_pdf", pdfUrl );
+            startActivity(intent);
+        }
+
+    }
     private void customBtnSearch() {
         View searchPlate = binding.searchView.findViewById(androidx.appcompat.R.id.search_plate);
         if (searchPlate != null) {
@@ -89,7 +115,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_achievement;
     }
     @Override
     protected void performDependencyInjection(FragmentComponent buildComponent) {

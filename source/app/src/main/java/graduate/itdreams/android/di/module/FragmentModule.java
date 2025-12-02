@@ -17,6 +17,7 @@ import dagger.Module;
 import dagger.Provides;
 import graduate.itdreams.android.ui.main.account.AccountUnLoginViewModel;
 import graduate.itdreams.android.ui.main.account.AccountViewModel;
+import graduate.itdreams.android.ui.main.achievement.AchievementViewModel;
 import graduate.itdreams.android.ui.main.home.HomeViewModel;
 import graduate.itdreams.android.ui.main.register.QuizJobViewModel;
 import graduate.itdreams.android.ui.main.register.SignUpViewModel;
@@ -26,6 +27,7 @@ import graduate.itdreams.android.ui.main.simulation.overview.OverviewViewModel;
 import graduate.itdreams.android.ui.main.simulation.rate.RateViewModel;
 import graduate.itdreams.android.ui.main.simulation.task.TaskViewModel;
 import graduate.itdreams.android.ui.main.taskdetail.SubTaskViewModel;
+import graduate.itdreams.android.ui.main.taskdetail.review.ReviewSimulationViewModel;
 
 @Module
 public class FragmentModule {
@@ -128,5 +130,18 @@ public class FragmentModule {
         ViewModelProviderFactory<SubTaskViewModel> factory = new ViewModelProviderFactory<>(SubTaskViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(SubTaskViewModel.class);
     }
-
+    @Provides
+    @FragmentScope
+    ReviewSimulationViewModel provideReviewSimulationViewModel(Repository repository, Context application) {
+        Supplier<ReviewSimulationViewModel> supplier = () -> new ReviewSimulationViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<ReviewSimulationViewModel> factory = new ViewModelProviderFactory<>(ReviewSimulationViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(ReviewSimulationViewModel.class);
+    }
+    @Provides
+    @FragmentScope
+    AchievementViewModel provideAchievementViewModel(Repository repository, Context application) {
+        Supplier<AchievementViewModel> supplier = () -> new AchievementViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<AchievementViewModel> factory = new ViewModelProviderFactory<>(AchievementViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(AchievementViewModel.class);
+    }
 }

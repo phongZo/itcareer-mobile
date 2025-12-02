@@ -3,6 +3,8 @@ package graduate.itdreams.android.data.remote;
 import java.util.List;
 
 import graduate.itdreams.android.data.model.api.ResponseListObj;
+import graduate.itdreams.android.data.model.api.request.achievement.UpdateCertificateRequest;
+import graduate.itdreams.android.data.model.api.request.review.ReviewSimulationRequest;
 import graduate.itdreams.android.data.model.api.request.student.ResetOtpRequest;
 import graduate.itdreams.android.data.model.api.request.student.StudentUpdateProfileRequest;
 import graduate.itdreams.android.data.model.api.request.student.VerifyOtpRequest;
@@ -10,6 +12,7 @@ import graduate.itdreams.android.data.model.api.request.task.CompleteTaskRequest
 import graduate.itdreams.android.data.model.api.request.task.TaskQuestionProgressRequest;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionProgressResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
+import graduate.itdreams.android.data.model.api.response.simulation.AchievementResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.data.model.api.response.student.SignUpResponse;
@@ -108,4 +111,12 @@ public interface ApiService {
             @Query("simulationId") long simulationId,
             @Query("taskId") long taskId
     );
+//  REVIEW
+    @POST("/v1/review/create")
+    Observable<ResponseWrapper> submitReview(@Body ReviewSimulationRequest request);
+//  ACHIEVEMENT
+    @GET("/v1/achievement/student-list")
+    Observable<ResponseWrapper<ResponseListObj<AchievementResponse>>> getAchievementList();
+    @PUT("/v1/achievement/update")
+    Observable<ResponseWrapper> updateAchievement(@Body UpdateCertificateRequest request);
 }

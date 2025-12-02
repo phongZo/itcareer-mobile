@@ -13,8 +13,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "BASE_URL", "\"https://learn-isaac-daughters-import.trycloudflare.com/\""
-        buildConfigField "String", "URL_FILE", "\"https://blocked-attachments-presentation-unlimited.trycloudflare.com/\""
+        buildConfigField "String", "BASE_URL", "\"https://innovation-successfully-sugar-entrepreneur.trycloudflare.com/\""
+        buildConfigField "String", "URL_FILE", "\"https://myth-receptor-darwin-distribution.trycloudflare.com/\""
         buildConfigField "String", "URL_LOAD_VIDEO", "\"https://itcareer-socket.nd24.id.vn/live\""
         javaCompileOptions {
             annotationProcessorOptions {
