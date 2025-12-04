@@ -26,6 +26,8 @@ import timber.log.Timber;
 
 public class TaskDetailViewModel extends BaseViewModel {
     private final MutableLiveData<List<TaskResponse>> tasksLiveData = new MutableLiveData<>();
+    public final MutableLiveData<String> simulationTitle = new MutableLiveData<>();
+    public final MutableLiveData<Float> simulationPercent = new MutableLiveData<>();
 
     public TaskDetailViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -48,7 +50,8 @@ public class TaskDetailViewModel extends BaseViewModel {
                 .subscribe(
                         response -> {
                             hideLoading();
-
+                            simulationTitle.setValue(response.getData().getTitle());
+                            simulationPercent.setValue(response.getData().getPercent());
                         }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);

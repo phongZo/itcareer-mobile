@@ -10,7 +10,7 @@ import graduate.itdreams.android.data.model.api.response.BaseResponse;
 import java.lang.reflect.Type;
 
 public class ApiModelUtils {
-    static Gson GSON = new GsonBuilder()
+    public static Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Double.class, (JsonSerializer<Double>) (src, typeOfSrc, context) -> {
                 if (src == src.longValue()) {
                     return new JsonPrimitive(src.longValue());
@@ -20,7 +20,6 @@ public class ApiModelUtils {
             //.setPrettyPrinting()
             .enableComplexMapKeySerialization()
             .create();
-
 
     public <T> T getDataObject(String data, Class<T> classOfT) {
         if (data == null) {

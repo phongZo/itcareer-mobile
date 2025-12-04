@@ -19,6 +19,7 @@ import java.util.List;
 import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
+import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.databinding.ActivitySimulationOverviewBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
@@ -115,5 +116,20 @@ public class SimulationOverviewActivity extends BaseActivity<ActivitySimulationO
         Intent intent = new Intent(this, TaskDetailActivity.class);
         intent.putExtra("simulation_id", itemId );
         startActivity(intent);
+    }
+
+    @Override
+    public void onMessageReceived(Message message) {
+
+    }
+
+    @Override
+    public void onConnectionClosed() {
+
+    }
+
+    @Override
+    public void onConnectionClosing() {
+
     }
 }

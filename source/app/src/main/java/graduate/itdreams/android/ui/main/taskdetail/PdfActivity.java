@@ -22,6 +22,7 @@ import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
+import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.databinding.ActivityPdfBinding;
 import graduate.itdreams.android.databinding.ActivityTaskDetailBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
@@ -85,5 +86,20 @@ public class PdfActivity extends BaseActivity<ActivityPdfBinding,PdfViewModel> {
     @Override
     public void performDependencyInjection(ActivityComponent buildComponent) {
         buildComponent.inject(this);
+    }
+
+    @Override
+    public void onMessageReceived(Message message) {
+
+    }
+
+    @Override
+    public void onConnectionClosed() {
+
+    }
+
+    @Override
+    public void onConnectionClosing() {
+
     }
 }

@@ -1,14 +1,22 @@
 package graduate.itdreams.android.ui.main;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import graduate.itdreams.android.BR;
 import graduate.itdreams.android.R;
+import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.databinding.ActivityMainBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
@@ -45,7 +53,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         viewBinding.setA(this);
         viewBinding.setVm(viewModel);
         initFragments();
-
+        viewModel.notification.observe(this, response -> {
+            showNotification(response.getMessage());
+        });
         viewBinding.bottomNav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
@@ -80,7 +90,27 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 //            viewModel.getApplication().getUser();
 //        }
     }
+    private void showNotification(String message) {
+        NotificationManager notificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        String channelId = "socket_channel";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel =
+                    new NotificationChannel(channelId, "Socket Messages",
+                            NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.ic_notificate_green)
+                        .setContentTitle("Phản hồi bài mô phỏng")
+                        .setContentText(message)
+                        .setAutoCancel(true);
+
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+    }
     private void initFragments() {
         homeFragment = new HomeFragment();
         fm = getSupportFragmentManager();
@@ -164,5 +194,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     public void performDependencyInjection(ActivityComponent buildComponent) {
         buildComponent.inject(this);
+    }
+
+    @Override
+    public void onMessageReceived(Message message) {
+        super.onMessageReceived(message);
+    }
+
+    @Override
+    public void onConnectionClosed() {
+
+    }
+
+    @Override
+    public void onConnectionClosing() {
+
     }
 }

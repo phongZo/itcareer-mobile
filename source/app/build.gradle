@@ -1,21 +1,24 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 34
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "graduate.itdreams.android"
         minSdkVersion 24
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "BASE_URL", "\"https://innovation-successfully-sugar-entrepreneur.trycloudflare.com/\""
+        buildConfigField "String", "BASE_URL", "\"https://brilliant-xml-italic-mid.trycloudflare.com/\""
         buildConfigField "String", "URL_FILE", "\"https://myth-receptor-darwin-distribution.trycloudflare.com/\""
         buildConfigField "String", "URL_LOAD_VIDEO", "\"https://itcareer-socket.nd24.id.vn/live\""
+        buildConfigField "String", "WS_URL", "\"wss://useful-pins-actions-mozilla.trycloudflare.com/ws\""
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -33,7 +36,7 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
-        version = "3.4.1"
+        version = "7.4.2"
 
     }
     compileOptions {
@@ -50,8 +53,8 @@ dependencies {
     def fragment_version = "1.3.4"
     implementation "androidx.fragment:fragment:$fragment_version"
 
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
     implementation 'androidx.navigation:navigation-fragment:2.4.0-alpha02'
     implementation 'androidx.navigation:navigation-ui:2.4.0-alpha02'
 
@@ -99,12 +102,6 @@ dependencies {
     //RxJava
     def rxJavaVer = '3.0.7'
     implementation "io.reactivex.rxjava3:rxjava:${rxJavaVer}"
-
-    // ViewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.3.1'
-
-    // LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.3.1'
 
     // Room
     def room_version = "2.4.0-alpha03"
@@ -164,4 +161,19 @@ dependencies {
 
     // pdf
     implementation 'com.github.mhiew:android-pdf-viewer:3.2.0-beta.1'
+
+    implementation platform('com.google.firebase:firebase-bom:32.2.2')
+    implementation 'com.google.firebase:firebase-messaging'
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    implementation 'com.tinder.scarlet:scarlet:0.1.12'
+
+
 }

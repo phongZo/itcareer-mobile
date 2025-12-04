@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import graduate.itdreams.android.BuildConfig;
 
 import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.data.Repository;
@@ -61,6 +62,7 @@ public class HomeViewModel extends BaseFragmentViewModel {
                             List<SimulationResponse> simulationList = response.getData().getContent();
 
                             _simulationList.setValue(simulationList);
+
                         }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);

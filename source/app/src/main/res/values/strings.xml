@@ -49,4 +49,6 @@
     <!-- Image -->
     <string name="update_fail">Cập nhật thât bại</string>
     <string name="invalid_image">File ảnh không hợp lệ</string>
+
+    <string name="socket_error">Lỗi socket</string>
 </resources>

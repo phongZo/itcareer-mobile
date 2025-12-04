@@ -22,6 +22,7 @@ import java.util.Locale;
 import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.model.api.request.student.StudentUpdateProfileRequest;
+import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.databinding.ActivityEditProfileBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
@@ -130,5 +131,19 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
         buildComponent.inject(this);
     }
 
+    @Override
+    public void onMessageReceived(Message message) {
+
+    }
+
+    @Override
+    public void onConnectionClosed() {
+
+    }
+
+    @Override
+    public void onConnectionClosing() {
+
+    }
 }
 

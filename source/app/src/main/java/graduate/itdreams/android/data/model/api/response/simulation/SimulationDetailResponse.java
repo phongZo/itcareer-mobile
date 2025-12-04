@@ -17,4 +17,5 @@ public class SimulationDetailResponse {
     private String title;
     private String totalEstimatedTime;
     private String videoPath;
+    private Float percent;
 }

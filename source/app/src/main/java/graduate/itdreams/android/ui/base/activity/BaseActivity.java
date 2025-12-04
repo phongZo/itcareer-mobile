@@ -28,17 +28,21 @@ import androidx.databinding.ObservableField;
 import androidx.databinding.ViewDataBinding;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.constant.Constants;
+import graduate.itdreams.android.data.socket.KittyRealtimeEvent;
+import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.di.component.DaggerActivityComponent;
 import graduate.itdreams.android.di.module.ActivityModule;
 import graduate.itdreams.android.utils.DialogUtils;
 
-public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity{
+public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity implements KittyRealtimeEvent {
 
     protected B viewBinding;
 
@@ -60,6 +64,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
     // Listen all action from local
     private BroadcastReceiver globalApplicationReceiver;
     private IntentFilter filterGlobalApplication;
+    Dialog socketDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -251,5 +256,37 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
                 clearFocusFromAllEditTexts(child);
             }
         }
+    }
+    @Override
+    public void onConnectionFailed() {
+        runOnUiThread(()->{
+            viewModel.hideLoading();
+            if(socketDialog != null){
+                if(!socketDialog.isShowing()){
+                    socketDialog.show();
+                }
+            }else {
+                showConnectionError();
+            }
+        });
+    }
+    @Override
+    public void onMessageReceived(Message message) {
+        viewModel.messageReceived(message);
+    }
+    @Override
+    public void onConnectionOpened() {
+        runOnUiThread(()->{
+            viewModel.hideLoading();
+            if(socketDialog != null && socketDialog.isShowing()){
+                socketDialog.dismiss();
+            }
+        });
+    }
+    protected void showConnectionError(){
+        socketDialog = new Dialog(this);
+        socketDialog.setCanceledOnTouchOutside(false);
+        socketDialog.show();
+
     }
 }

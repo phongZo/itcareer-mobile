@@ -22,6 +22,7 @@ import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
+import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.databinding.ActivityTaskDetailBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
@@ -40,7 +41,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         super.onCreate(savedInstanceState);
         viewBinding.setA(this);
         viewBinding.setVm(viewModel);
-
+        viewBinding.setLifecycleOwner(this);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.tab_content_frame, new SubTaskFragment()) // hoặc Fragment bạn muốn hiển thị
@@ -54,6 +55,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         viewModel = new ViewModelProvider(this).get(TaskDetailViewModel.class);
 
         simulationId = getIntent().getLongExtra("simulation_id", -1L);
+        viewModel.fetchSimulationDetail(simulationId);
         viewModel.fetchListTask(simulationId);
 
         viewModel.getTasks().observe(this, taskItems -> {
@@ -134,5 +136,20 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
     @Override
     public void performDependencyInjection(ActivityComponent buildComponent) {
         buildComponent.inject(this);
+    }
+
+    @Override
+    public void onMessageReceived(Message message) {
+
+    }
+
+    @Override
+    public void onConnectionClosed() {
+
+    }
+
+    @Override
+    public void onConnectionClosing() {
+
     }
 }

@@ -10,6 +10,7 @@ import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.data.Repository;
 import graduate.itdreams.android.data.model.other.ToastMessage;
 
+import graduate.itdreams.android.data.socket.dto.Message;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import lombok.Getter;
 import lombok.Setter;
@@ -72,5 +73,10 @@ public class BaseViewModel extends ViewModel {
 
     public boolean isLogin() {
         return repository.getToken() != null && !Objects.equals(repository.getToken(), "") && !Objects.equals(repository.getToken(), "NULL");
+    }
+    public void sendMessage(Message message){
+        application.sendMessage(message);
+    }
+    public void messageReceived(Message message){
     }
 }

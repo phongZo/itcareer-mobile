@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "892228652246",
+    "project_id": "itdream-3855c",
+    "storage_bucket": "itdream-3855c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892228652246:android:ee89e0952aacb366e88d77",
+        "android_client_info": {
+          "package_name": "graduate.itdreams.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV6s4rNUJGV0iHoJGPUDzaP-PbW8F4SAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

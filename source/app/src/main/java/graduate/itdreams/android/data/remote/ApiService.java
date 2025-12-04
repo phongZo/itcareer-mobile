@@ -10,6 +10,7 @@ import graduate.itdreams.android.data.model.api.request.student.StudentUpdatePro
 import graduate.itdreams.android.data.model.api.request.student.VerifyOtpRequest;
 import graduate.itdreams.android.data.model.api.request.task.CompleteTaskRequest;
 import graduate.itdreams.android.data.model.api.request.task.TaskQuestionProgressRequest;
+import graduate.itdreams.android.data.model.api.response.notification.NotificationResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionProgressResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.AchievementResponse;
@@ -119,4 +120,8 @@ public interface ApiService {
     Observable<ResponseWrapper<ResponseListObj<AchievementResponse>>> getAchievementList();
     @PUT("/v1/achievement/update")
     Observable<ResponseWrapper> updateAchievement(@Body UpdateCertificateRequest request);
+
+//  NOTIFICATION
+    @GET("/v1/notification/student-list")
+    Observable<ResponseWrapper<ResponseListObj<NotificationResponse>>> getNotificationList();
 }
