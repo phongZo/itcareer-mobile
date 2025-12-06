@@ -6,14 +6,29 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import eu.davidea.flexibleadapter.databinding.BR;
+
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.tasks.Task;
+
+import graduate.itdreams.android.BR;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.model.api.request.login.CandidateLoginRequest;
+import graduate.itdreams.android.data.model.api.request.login.GoogleLoginRequest;
 import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.databinding.ActivityLoginBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
@@ -69,6 +84,65 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
             }
             return false;
         });
+    }
+
+    // 1️⃣ Khai báo launcher để thay startActivityForResult
+    private final ActivityResultLauncher<Intent> googleLoginLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                        handleSignInResult(task);
+                    }
+            );
+
+    // 2️⃣ Khi bấm nút login
+    public void onGoogleLoginClick() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestScopes(
+                        new Scope("https://www.googleapis.com/auth/userinfo.profile"),
+                        new Scope("https://www.googleapis.com/auth/userinfo.email")
+                )
+                .build();
+
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Sign out trước khi login để đảm bảo lần bấm sau vẫn hiển thị UI
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            // tạo mới Intent và launch
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            googleLoginLauncher.launch(signInIntent);
+        });
+    }
+
+    // 3️⃣ Xử lý kết quả sign-in
+    private void handleSignInResult(Task<GoogleSignInAccount> task) {
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+
+            // Lấy access token trong thread riêng
+            new Thread(() -> {
+                try {
+                    String scope = "oauth2:profile email"; // trùng với backend cần
+                    String accessToken = GoogleAuthUtil.getToken(getApplicationContext(), account.getEmail(), scope);
+                    Log.d("GOOGLE", "Access Token: " + accessToken);
+
+                    GoogleLoginRequest request = new GoogleLoginRequest();
+                    request.setAccessToken(accessToken);
+                    viewModel.googleLogin(request);
+
+                } catch (UserRecoverableAuthException e) {
+                    // cần show dialog để user cho quyền
+                    startActivity(e.getIntent());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+        } catch (ApiException e) {
+            Log.e("GOOGLE", "SignIn failed: " + e.getMessage());
+        }
     }
 
     public void onLoginClick() {

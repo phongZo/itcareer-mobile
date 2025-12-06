@@ -29,7 +29,8 @@ import graduate.itdreams.android.databinding.FragmentSubTaskBinding;
 import graduate.itdreams.android.di.component.FragmentComponent;
 import graduate.itdreams.android.ui.base.fragment.BaseFragment;
 import graduate.itdreams.android.ui.main.simulation.overview.OverviewAdapter;
-import graduate.itdreams.android.ui.main.taskdetail.quiz.QuestionQuizAdapter;
+import graduate.itdreams.android.ui.main.taskdetail.question.QuestionItemAdapter;
+import graduate.itdreams.android.ui.main.taskdetail.question.QuestionQuizAdapter;
 
 public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTaskViewModel> {
     private int currentIndex = 0;
@@ -87,7 +88,11 @@ public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTask
                     binding.btnComplete.setVisibility(View.VISIBLE);
                     binding.layoutQuestionFileAndText.setVisibility(View.GONE);
                     QuestionQuizAdapter adapter = new QuestionQuizAdapter(responseTaskQuestion, currentIndex, isCorrect -> {
-                        binding.btnNext.setEnabled(true);
+                        if(currentIndex + 1 == responseTaskQuestion.size()){
+                            binding.btnNext.setEnabled(false);
+                        }else {
+                            binding.btnNext.setEnabled(true);
+                        }
                         submitQuizClick(responseTaskQuestion.get(currentIndex).getId(), isCorrect);
                     });
                     binding.rcvQuestionQuiz.setAdapter(adapter);
@@ -172,6 +177,7 @@ public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTask
         String url = viewModel.getSubTaskDetail().getValue().getFilePath();
         Intent intent = new Intent(getContext(), PdfActivity.class);
         intent.putExtra("url_pdf", url );
+        intent.putExtra("title_pdf", viewModel.getSubTaskDetail().getValue().getTitle() );
         startActivity(intent);
     }
     @Override

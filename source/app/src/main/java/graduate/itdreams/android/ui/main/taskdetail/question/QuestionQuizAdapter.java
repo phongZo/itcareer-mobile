@@ -1,8 +1,7 @@
-package graduate.itdreams.android.ui.main.taskdetail.quiz;
+package graduate.itdreams.android.ui.main.taskdetail.question;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -19,9 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graduate.itdreams.android.R;
-import graduate.itdreams.android.data.model.api.response.ItemTitleContentResponse;
 import graduate.itdreams.android.data.model.api.response.question.OptionItem;
-import graduate.itdreams.android.data.model.api.response.question.QuestionResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
 import graduate.itdreams.android.databinding.ItemQuestionQuizBinding;
 

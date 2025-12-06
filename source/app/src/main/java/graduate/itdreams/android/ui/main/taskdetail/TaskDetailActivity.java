@@ -24,6 +24,7 @@ import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
 import graduate.itdreams.android.data.socket.dto.Message;
 import graduate.itdreams.android.databinding.ActivityTaskDetailBinding;
+import graduate.itdreams.android.databinding.ItemHeaderMenuBinding;
 import graduate.itdreams.android.di.component.ActivityComponent;
 import graduate.itdreams.android.ui.base.activity.BaseActivity;
 import graduate.itdreams.android.ui.main.simulation.rate.RateFragment;
@@ -42,6 +43,12 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         viewBinding.setA(this);
         viewBinding.setVm(viewModel);
         viewBinding.setLifecycleOwner(this);
+
+        NavigationView navigationView = viewBinding.navigationView;
+        ItemHeaderMenuBinding headerBinding = ItemHeaderMenuBinding.inflate(getLayoutInflater());
+        headerBinding.setVm(viewModel);
+        headerBinding.setLifecycleOwner(this);
+        navigationView.addHeaderView(headerBinding.getRoot());
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.tab_content_frame, new SubTaskFragment()) // hoặc Fragment bạn muốn hiển thị

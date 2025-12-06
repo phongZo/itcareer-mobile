@@ -92,7 +92,7 @@
                 style="@style/Text_16_Bold_Black"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/bg_quiz"
                 android:padding="@dimen/_5sdp"
                 android:orientation="vertical">
@@ -108,7 +108,8 @@
                     android:layout_height="wrap_content"
                     android:text="Tiếp tục"
                     android:enabled="false"
-                    android:background="@drawable/bg_btn_radius_25"
+                    android:layout_gravity="end"
+                    android:background="@drawable/bg_btn_next_selector"
                     style="@style/Text_12_Bold_White"
                     android:paddingVertical="@dimen/_5sdp"
                     android:paddingHorizontal="@dimen/_10sdp"/>
@@ -117,16 +118,27 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{vm.completeSuccess ? View.GONE : View.VISIBLE}"
+            android:text="Bạn còn câu hỏi chưa hoàn thành"
+            android:layout_gravity="center"
+            style="@style/Text_12_Normal_Black"
+            android:textColor="@color/text_error"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_10sdp"/>
+        <TextView
             android:id="@+id/btnComplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:text="Hoàn thành"
             android:layout_gravity="center"
-            android:background="@drawable/bg_btn_radius_25"
+            android:background="@drawable/bg_btn_green_radius_5"
             style="@style/Text_12_Bold_White"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:paddingVertical="@dimen/_5sdp"
-            android:visibility="gone"
             android:paddingHorizontal="@dimen/_10sdp"/>
     </LinearLayout>
 

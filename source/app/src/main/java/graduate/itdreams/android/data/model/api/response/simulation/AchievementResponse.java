@@ -8,4 +8,5 @@ public class AchievementResponse {
     private Long id;
     private String filePath;
     private SimulationResponse simulation;
+    private String studentName;
 }

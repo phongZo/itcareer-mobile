@@ -15,8 +15,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "BASE_URL", "\"https://brilliant-xml-italic-mid.trycloudflare.com/\""
-        buildConfigField "String", "URL_FILE", "\"https://myth-receptor-darwin-distribution.trycloudflare.com/\""
+        buildConfigField "String", "BASE_URL", "\"https://api.itdreamcareer.io.vn\""
+        buildConfigField "String", "URL_FILE", "\"https://media.itdreamcareer.io.vn\""
         buildConfigField "String", "URL_LOAD_VIDEO", "\"https://itcareer-socket.nd24.id.vn/live\""
         buildConfigField "String", "WS_URL", "\"wss://useful-pins-actions-mozilla.trycloudflare.com/ws\""
         javaCompileOptions {

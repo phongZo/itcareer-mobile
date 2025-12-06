@@ -28,6 +28,8 @@ public class SimulationOverviewViewModel extends BaseViewModel {
     public final MutableLiveData<String> author = new MutableLiveData<>("");
     public final MutableLiveData<String> estimatedTime = new MutableLiveData<>("");
     public final MutableLiveData<String> rating = new MutableLiveData<>("");
+    public final MutableLiveData<Long> participantQuantity = new MutableLiveData<>(0L);
+
     private final MutableLiveData<SimulationDetailResponse> simulationDetail = new MutableLiveData<>();
     public LiveData<SimulationDetailResponse> getSimulationDetail() {
         return simulationDetail;
@@ -63,7 +65,7 @@ public class SimulationOverviewViewModel extends BaseViewModel {
                             author.setValue(response.getData().getEducator().getProfileAccountDto().getFullName());
                             estimatedTime.setValue(response.getData().getTotalEstimatedTime());
                             rating.setValue(response.getData().getAvgRating().toString().trim());
-
+                            participantQuantity.setValue(response.getData().getParticipantQuantity());
                             simulationDetail.setValue(response.getData());
                             simulationId.setValue(id);
                             loadImage(response.getData().getImagePath());

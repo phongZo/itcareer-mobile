@@ -43,21 +43,32 @@
             android:text="Nhấn để tải file"
             style="@style/Text_12_Normal_Black"/>
     </LinearLayout>
-    <TextView
-        android:id="@+id/tvFileName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginHorizontal="@dimen/_40sdp"
-        />
-    <TextView
-        android:id="@+id/btnSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nộp"
-        android:background="@drawable/bg_btn_radius_25"
-        style="@style/Text_12_Bold_White"
-        android:paddingVertical="@dimen/_5sdp"
-        android:paddingHorizontal="@dimen/_10sdp"/>
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tvFileName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_40sdp"
+            />
+        <TextView
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gửi"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_btn_blue_radius_5"
+            style="@style/Text_12_Bold_White"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_10sdp"/>
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -66,20 +66,23 @@ public class AchievementFragment extends BaseFragment<FragmentAchievementBinding
             if (postList == null || postList.isEmpty()) return;
 
             AchievementAdapter adapter = new AchievementAdapter(viewModel, item -> {
+                String titleSimulation = "Thành tựu " + item.getSimulation().getTitle();
+
                 if(item.getFilePath() == null){
                     UploadCertificateRequest request = new UploadCertificateRequest();
                     request.setSimulationName(item.getSimulation().getTitle());
-                    request.setUsername("thuylinh12345");
+                    request.setUsername(item.getStudentName());
                     viewModel.uploadCertificate(request);
                     viewModel.getCertificateUrl().observe(getViewLifecycleOwner(), url ->{
                         UpdateCertificateRequest updateCertificateRequest = new UpdateCertificateRequest();
                         updateCertificateRequest.setId(item.getId());
                         updateCertificateRequest.setFilePath(url);
                         viewModel.updateAchievement(updateCertificateRequest);
-                        loadCertificate(url);
+
+                        loadCertificate(url, titleSimulation);
                     });
                 }else {
-                    loadCertificate(item.getFilePath());
+                    loadCertificate(item.getFilePath(), titleSimulation);
                 }
 
             });
@@ -91,10 +94,11 @@ public class AchievementFragment extends BaseFragment<FragmentAchievementBinding
 
     }
 
-    private void loadCertificate(String pdfUrl){
+    private void loadCertificate(String pdfUrl, String title){
         if (pdfUrl != null) {
             Intent intent = new Intent(getContext(), PdfActivity.class);
             intent.putExtra("url_pdf", pdfUrl );
+            intent.putExtra("title_pdf", title );
             startActivity(intent);
         }
 

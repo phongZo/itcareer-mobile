@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "892228652246",
-    "project_id": "itdream-3855c",
-    "storage_bucket": "itdream-3855c.firebasestorage.app"
+    "project_number": "586395408194",
+    "project_id": "itdream-35cd1",
+    "storage_bucket": "itdream-35cd1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:892228652246:android:ee89e0952aacb366e88d77",
+        "mobilesdk_app_id": "1:586395408194:android:b3a6f8c7bb5ba7d64f1adb",
         "android_client_info": {
           "package_name": "graduate.itdreams.android"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "586395408194-irktqst1r7ri6hsh07ghipk0ocods79b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "graduate.itdreams.android",
+            "certificate_hash": "b06c05f6dbe80d2b8114581e178e6219c870b318"
+          }
+        },
+        {
+          "client_id": "586395408194-19hcshkcdehgqpics0cg5tvu1ijfkepm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDV6s4rNUJGV0iHoJGPUDzaP-PbW8F4SAU"
+          "current_key": "AIzaSyBqtuUAeq76IzgR9rez71G9O47mBD2AD-g"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586395408194-19hcshkcdehgqpics0cg5tvu1ijfkepm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

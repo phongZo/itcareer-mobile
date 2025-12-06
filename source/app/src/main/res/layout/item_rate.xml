@@ -67,12 +67,14 @@
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:visibility="gone"
                 android:text="22/12/2022 12:12:12"
                 style="@style/Text_10_Normal_Black"
                 android:textColor="@color/text_hint"/>
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="I can't believe this. I read about Excel, Power BI, and Tableau for this role, and now I'm seeing how these skills are useful."

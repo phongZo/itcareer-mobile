@@ -266,7 +266,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
                     socketDialog.show();
                 }
             }else {
-                showConnectionError();
+//                showConnectionError();
             }
         });
     }

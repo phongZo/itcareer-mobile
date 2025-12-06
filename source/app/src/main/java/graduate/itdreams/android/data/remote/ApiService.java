@@ -4,16 +4,19 @@ import java.util.List;
 
 import graduate.itdreams.android.data.model.api.ResponseListObj;
 import graduate.itdreams.android.data.model.api.request.achievement.UpdateCertificateRequest;
+import graduate.itdreams.android.data.model.api.request.login.GoogleLoginRequest;
 import graduate.itdreams.android.data.model.api.request.review.ReviewSimulationRequest;
 import graduate.itdreams.android.data.model.api.request.student.ResetOtpRequest;
 import graduate.itdreams.android.data.model.api.request.student.StudentUpdateProfileRequest;
 import graduate.itdreams.android.data.model.api.request.student.VerifyOtpRequest;
 import graduate.itdreams.android.data.model.api.request.task.CompleteTaskRequest;
+import graduate.itdreams.android.data.model.api.request.task.RestartTaskRequest;
 import graduate.itdreams.android.data.model.api.request.task.TaskQuestionProgressRequest;
 import graduate.itdreams.android.data.model.api.response.notification.NotificationResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionProgressResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.AchievementResponse;
+import graduate.itdreams.android.data.model.api.response.simulation.RateResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationDetailResponse;
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.data.model.api.response.student.SignUpResponse;
@@ -48,13 +51,17 @@ public interface ApiService {
     @Headers({"UseBasicAuth: 1"})
     Observable<AccessTokenResponse> candidateLogin(@Body CandidateLoginRequest request);
 
+    @POST("/v1/google/student-login")
+    @Headers({"UseBasicAuth: 1"})
+    Observable<AccessTokenResponse> googleLogin(@Body GoogleLoginRequest request);
+
 //  STUDENT
     @POST("/v1/student/signup")
     @Headers({"UseBasicAuth: 1"})
     Observable<ResponseWrapper<SignUpResponse>> signUpCandidate(@Body StudentSignUpRequest request);
 
     @GET("/v1/student/profile")
-    Observable<ResponseWrapper<AccountResponse<ProfileAccountResponse>>> getProfile();
+    Observable<ResponseWrapper<AccountResponse>> getProfile();
 
     @PUT("/v1/student/client_update")
     Observable<ResponseWrapper> update(@Body StudentUpdateProfileRequest request);
@@ -84,7 +91,9 @@ public interface ApiService {
 
     @GET("/v1/simulation/student-get/{id}")
     Observable<ResponseWrapper<SimulationDetailResponse>> getSimulationDetail(@Path("id") Long id);
-
+//  RATE
+    @GET("/v1/review/client-list")
+    Observable<ResponseWrapper<ResponseListObj<RateResponse>>> getRateList(@Query("simulationId") long simulationId);
 //  TASK
     @GET("/v1/task/student-list")
     Observable<ResponseWrapper<ResponseListObj<TaskResponse>>> getTaskList(@Query("simulationId") long simulationId);
@@ -100,6 +109,8 @@ public interface ApiService {
     Observable<ResponseWrapper> completeTask(@Body CompleteTaskRequest request);
     @POST("/v1/task-question-progress/create")
     Observable<ResponseWrapper> submitQuestion(@Body TaskQuestionProgressRequest request);
+    @PUT("/v1/subtask-progress/restart")
+    Observable<ResponseWrapper> restartQuestion(@Body RestartTaskRequest request);
 
 //  TASK QUESTION
     @GET("/v1/task-question-progress/student-list")
@@ -123,5 +134,5 @@ public interface ApiService {
 
 //  NOTIFICATION
     @GET("/v1/notification/student-list")
-    Observable<ResponseWrapper<ResponseListObj<NotificationResponse>>> getNotificationList();
+    Observable<ResponseWrapper<List<NotificationResponse>>> getNotificationList();
 }

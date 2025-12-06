@@ -50,7 +50,7 @@ public class NotificationViewModel extends BaseFragmentViewModel {
                 .subscribe(
                         response -> {
                             hideLoading();
-                            List<NotificationResponse> notificationList = response.getData().getContent();
+                            List<NotificationResponse> notificationList = response.getData();
 
                             _notificationList.setValue(notificationList);
                         }, throwable -> {

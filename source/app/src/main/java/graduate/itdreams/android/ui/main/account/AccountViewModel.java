@@ -1,11 +1,14 @@
 package graduate.itdreams.android.ui.main.account;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import graduate.itdreams.android.utils.ImageUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -65,23 +68,45 @@ public class AccountViewModel extends BaseFragmentViewModel {
     }
 
     public void loadAvatar(String url){
-        compositeDisposable.add(repository.getUploadApiService().loadFile(url)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( responseBody ->  {
-                    InputStream inputStream = responseBody.byteStream();
-                    Bitmap bitmap = ImageUtils.getBitmap(inputStream);
-                    if (bitmap != null) {
-                        avatarLiveData.setValue(bitmap);
-                    } else {
-                        Log.e("ProfileViewModel", "Lỗi: Bitmap rỗng");
-                    }
-                }, throwable -> {
-                    Log.e("ProfileViewModel", "Lỗi khi tải ảnh: " + throwable.getMessage());
-                })
-        );
+        if (url == null || url.isEmpty()) return;
 
+        if (url.startsWith("https://") || url.startsWith("http://")) {
+            // URL trực tiếp (ví dụ Google)
+            loadAvatarFromUrl(url);
+        } else {
+            // URL backend (nếu backend trả path nội bộ)
+            compositeDisposable.add(repository.getUploadApiService().loadFile(url)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(responseBody -> {
+                        InputStream inputStream = responseBody.byteStream();
+                        Bitmap bitmap = ImageUtils.getBitmap(inputStream);
+                        if (bitmap != null) {
+                            avatarLiveData.setValue(bitmap);
+                        }
+                    }, throwable -> Log.e("ProfileViewModel", "Lỗi khi tải ảnh: " + throwable.getMessage()))
+            );
+        }
     }
+
+    // Load trực tiếp từ URL HTTPS/HTTP
+    private void loadAvatarFromUrl(String url) {
+        new Thread(() -> {
+            try {
+                URL imageUrl = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) imageUrl.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(input);
+                input.close();
+                avatarLiveData.postValue(bitmap);
+            } catch (Exception e) {
+                Log.e("ProfileViewModel", "Lỗi khi tải ảnh từ URL: " + e.getMessage());
+            }
+        }).start();
+    }
+
     public void logout(){
         repository.getSharedPreferences().setToken(null);
         repository.getSharedPreferences().saveAccessTokenObject(null);

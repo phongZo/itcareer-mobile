@@ -1,4 +1,4 @@
-package graduate.itdreams.android.ui.main.taskdetail;
+package graduate.itdreams.android.ui.main.taskdetail.question;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,11 +10,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import graduate.itdreams.android.data.model.api.response.ItemTitleContentResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
 import graduate.itdreams.android.databinding.ItemQuestionFileBinding;
 import graduate.itdreams.android.databinding.ItemQuestionTextBinding;
-import graduate.itdreams.android.databinding.ItemTitleContentBinding;
 
 public class QuestionItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_FILE = 1;

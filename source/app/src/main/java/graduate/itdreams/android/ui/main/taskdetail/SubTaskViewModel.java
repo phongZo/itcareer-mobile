@@ -1,22 +1,13 @@
 package graduate.itdreams.android.ui.main.taskdetail;
 
-import static kotlin.io.ByteStreamsKt.readBytes;
-
-import android.graphics.Bitmap;
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import graduate.itdreams.android.MVVMApplication;
-import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.Repository;
-import graduate.itdreams.android.data.model.api.request.student.StudentUpdateProfileRequest;
 import graduate.itdreams.android.data.model.api.request.task.CompleteTaskRequest;
 import graduate.itdreams.android.data.model.api.request.task.TaskQuestionProgressRequest;
 import graduate.itdreams.android.data.model.api.response.file.UploadResponse;
@@ -24,9 +15,7 @@ import graduate.itdreams.android.data.model.api.response.question.TaskQuestionPr
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskProgressResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
-import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
 import graduate.itdreams.android.ui.base.fragment.BaseFragmentViewModel;
-import graduate.itdreams.android.utils.ImageUtils;
 import graduate.itdreams.android.utils.NetworkUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -52,6 +41,8 @@ public class SubTaskViewModel extends BaseFragmentViewModel {
     public LiveData<List<TaskQuestionResponse>> getTaskQuestion() { return taskQuestionLiveData; }
     private final MutableLiveData<String> fileLiveData = new MutableLiveData<>();
     public LiveData<String> getFilePath() { return fileLiveData; }
+    public final MutableLiveData<Boolean> completeSuccess = new MutableLiveData<>(true);
+
     public SubTaskViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
@@ -194,17 +185,20 @@ public class SubTaskViewModel extends BaseFragmentViewModel {
                 .subscribe(
                         response -> {
                             hideLoading();
-                            //taskQuestionLiveData.setValue(response.getData().getContent());
+                            showNormalMessage("Hoàn thành nhiệm vụ");
+                            completeSuccess.setValue(true);
                         }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);
+                            completeSuccess.setValue(false);
+
                             if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
                                 HttpException httpException = (HttpException) throwable;
                                 if (httpException.code() == 400) {
+
                                 }
                             }
                         }));
-
     }
 
     public void submitQuestion(TaskQuestionProgressRequest request) {
@@ -225,13 +219,14 @@ public class SubTaskViewModel extends BaseFragmentViewModel {
                 .subscribe(
                         response -> {
                             hideLoading();
-                            //taskQuestionLiveData.setValue(response.getData().getContent());
+                            showNormalMessage("Gửi thành công");
                         }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);
                             if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
                                 HttpException httpException = (HttpException) throwable;
                                 if (httpException.code() == 400) {
+                                    showNormalMessage("Không được để trống nội dung");
                                 }
                             }
                         }));

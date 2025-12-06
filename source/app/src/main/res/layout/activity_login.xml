@@ -137,33 +137,41 @@
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:onClick="@{v -> a.onLoginClick()}"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="@dimen/_12sdp">
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bạn chưa có tài khoản ?"
-                    style="@style/Text_12_Normal_Black"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/_12ssp"
-                    android:text="Đăng kí ngay"
-                    android:textColor="@color/text_app"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:onClick="@{v -> a.onSignUpClick()}"/>
-            </LinearLayout>
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:src="@drawable/google"
+                    android:gravity="center"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:onClick="@{v -> a.onGoogleLoginClick()}"/>
 
             <View
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_2sdp"
                 android:background="@color/line_app"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="@dimen/_12sdp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bạn chưa có tài khoản ?"
+                        style="@style/Text_12_Normal_Black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_12ssp"
+                        android:text="Đăng kí ngay"
+                        android:textColor="@color/text_app"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:onClick="@{v -> a.onSignUpClick()}"/>
+                </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

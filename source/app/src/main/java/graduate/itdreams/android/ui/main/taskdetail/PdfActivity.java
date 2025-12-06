@@ -1,7 +1,14 @@
 package graduate.itdreams.android.ui.main.taskdetail;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -16,6 +23,8 @@ import com.google.android.material.navigation.NavigationView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.text.Normalizer;
 import java.util.List;
 
 import eu.davidea.flexibleadapter.databinding.BR;
@@ -36,6 +45,7 @@ public class PdfActivity extends BaseActivity<ActivityPdfBinding,PdfViewModel> {
         viewBinding.setA(this);
         viewBinding.setVm(viewModel);
         String pdfUrl = getIntent().getStringExtra("url_pdf");
+        String titlePdf = getIntent().getStringExtra("title_pdf");
         if (pdfUrl != null) {
             viewModel.loadDocument(pdfUrl);
         }
@@ -65,11 +75,80 @@ public class PdfActivity extends BaseActivity<ActivityPdfBinding,PdfViewModel> {
                             .load();
                 });
 
+                viewBinding.btnDownload.setOnClickListener(v ->{
+                    savePdfToDownloads(toFileName(titlePdf), bytes);
+                });
             } else {
                 Log.w("PdfActivity", "PDF dữ liệu trống hoặc null");
             }
         });
 
+    }
+    public static String toFileName(String input) {
+        if (input == null) return "default";
+
+        // 1. Chuẩn hóa về NFC
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+
+        // 2. Loại bỏ dấu tiếng Việt
+        String noAccent = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+
+        // 3. Thay khoảng trắng hoặc ký tự lạ bằng dấu gạch dưới
+        noAccent = noAccent.replaceAll("[^a-zA-Z0-9]+", "_");
+
+        // 4. Xóa "_" ở đầu/cuối nếu có
+        noAccent = noAccent.replaceAll("^_+|_+$", "");
+
+        return noAccent + ".pdf";
+    }
+    private void savePdfToDownloads(String fileName, byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            Toast.makeText(this, "Không có dữ liệu để tải", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // ⭐ API 29+ (Android 10 trở lên): Dùng MediaStore, không cần permission
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+                values.put(MediaStore.Downloads.MIME_TYPE, "application/pdf");
+                values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+                Uri uri = getContentResolver().insert(
+                        MediaStore.Downloads.EXTERNAL_CONTENT_URI, values
+                );
+
+                if (uri != null) {
+                    try (OutputStream out = getContentResolver().openOutputStream(uri)) {
+                        out.write(bytes);
+                    }
+                    Toast.makeText(this, "Đã lưu (API29+): " + fileName, Toast.LENGTH_LONG).show();
+                }
+
+            } else {
+                // ⭐ API 24–28: Lưu trực tiếp vào /Downloads → CẦN permission WRITE_EXTERNAL_STORAGE
+                File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                if (!downloads.exists()) downloads.mkdirs();
+
+                File outFile = new File(downloads, fileName);
+
+                FileOutputStream fos = new FileOutputStream(outFile);
+                fos.write(bytes);
+                fos.close();
+
+                // Quét vào MediaStore để hiện trong ứng dụng Files
+                Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                scanIntent.setData(Uri.fromFile(outFile));
+                sendBroadcast(scanIntent);
+
+                Toast.makeText(this, "Đã lưu (API<29): " + fileName, Toast.LENGTH_LONG).show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Lỗi khi lưu file", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
