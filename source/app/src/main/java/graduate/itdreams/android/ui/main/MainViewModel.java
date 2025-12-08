@@ -23,7 +23,7 @@ public class MainViewModel extends BaseViewModel {
     public LiveData<NotificationResponse> notification = _notification;
     public MainViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
-        application.createSocket(BuildConfig.WS_URL);
+        //application.createSocket(BuildConfig.WS_URL);
 
     }
 //    public void doLogin(){

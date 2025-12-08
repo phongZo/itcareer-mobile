@@ -21,6 +21,7 @@ import graduate.itdreams.android.data.model.api.response.simulation.SimulationDe
 import graduate.itdreams.android.data.model.api.response.simulation.SimulationResponse;
 import graduate.itdreams.android.data.model.api.response.student.SignUpResponse;
 import graduate.itdreams.android.data.model.api.response.file.UploadResponse;
+import graduate.itdreams.android.data.model.api.response.task.ListAnswerResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskProgressResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.data.model.api.response.task.TaskResponse;
@@ -52,8 +53,8 @@ public interface ApiService {
     Observable<AccessTokenResponse> candidateLogin(@Body CandidateLoginRequest request);
 
     @POST("/v1/google/student-login")
-    @Headers({"UseBasicAuth: 1"})
-    Observable<AccessTokenResponse> googleLogin(@Body GoogleLoginRequest request);
+    @Headers({"IgnoreAuth: 1"})
+    Observable<ResponseWrapper<String>> googleLogin(@Body GoogleLoginRequest request);
 
 //  STUDENT
     @POST("/v1/student/signup")
@@ -101,7 +102,11 @@ public interface ApiService {
 //  SUBTASK
     @GET("/v1/task/student-get/{id}")
     Observable<ResponseWrapper<SubTaskResponse>> getSubTaskDetail(@Path("id") Long id);
-
+    @GET("/v1/task-question-progress/student-list")
+    Observable<ResponseWrapper<ResponseListObj<ListAnswerResponse>>> getAnswerList(
+            @Query("studentSubTaskProgressId") long studentSubTaskProgressId,
+            @Query("taskId") long taskId
+    );
     @GET("/v1/subtask-progress/student-get/{id}")
     Observable<ResponseWrapper<SubTaskProgressResponse>> createSubTaskProgress(@Path("id") Long id);
 

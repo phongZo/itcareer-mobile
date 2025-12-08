@@ -130,7 +130,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
                     GoogleLoginRequest request = new GoogleLoginRequest();
                     request.setAccessToken(accessToken);
-                    viewModel.googleLogin(request);
+                    runOnUiThread(() -> viewModel.googleLogin(request));
 
                 } catch (UserRecoverableAuthException e) {
                     // cần show dialog để user cho quyền

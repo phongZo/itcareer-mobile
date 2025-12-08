@@ -69,6 +69,11 @@
             android:paddingVertical="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_10sdp"/>
     </LinearLayout>
-
+    <ImageView
+        android:id="@+id/answerPdf"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pdf_small"
+        android:layout_marginHorizontal="@dimen/_40sdp"/>
 
 </LinearLayout>

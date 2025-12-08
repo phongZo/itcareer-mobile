@@ -49,11 +49,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         headerBinding.setVm(viewModel);
         headerBinding.setLifecycleOwner(this);
         navigationView.addHeaderView(headerBinding.getRoot());
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.tab_content_frame, new SubTaskFragment()) // hoặc Fragment bạn muốn hiển thị
-                    .commit();
-        }
+
         initDrawer();
         initRecyclerView();
         initViewModel();
@@ -76,7 +72,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new TaskDrawerAdapter(
-                (task, subTask) -> onSubTaskSelected(task, subTask),
+                (task, subTask) -> onSubTaskSelected(simulationId, subTask),
                 () -> onRatingClick());
         recyclerView.setAdapter(adapter);
     }
@@ -92,14 +88,14 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
                 .commit();
         drawerLayout.closeDrawer(GravityCompat.START);
     }
-    private void onSubTaskSelected(TaskResponse task, SubTaskResponse subTask) {
-        SubTaskFragment fragment = (SubTaskFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.tab_content_frame);
-        if (fragment != null) {
-            fragment.loadSubTask(simulationId, subTask);
-        }
+    private void onSubTaskSelected(Long simulationId, SubTaskResponse subTask) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.tab_content_frame, SubTaskFragment.newInstance(simulationId, subTask))
+                .commit();
+
         drawerLayout.closeDrawer(GravityCompat.START);
     }
+
 
     private void initDrawer() {
         drawerLayout = viewBinding.drawerLayout;
@@ -121,11 +117,7 @@ public class TaskDetailActivity extends BaseActivity<ActivityTaskDetailBinding,T
         TaskResponse firstTask = taskItems.get(0);
         SubTaskResponse firstSubTask = firstTask.getSubTasks().get(0);
 
-        SubTaskFragment fragment = (SubTaskFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.tab_content_frame);
-        if (fragment != null) {
-            fragment.loadSubTask(simulationId, firstSubTask);
-        }
+        onSubTaskSelected(simulationId, firstSubTask);
 
         adapter.selectDefaultSubTask(firstTask, firstSubTask);
     }

@@ -82,7 +82,9 @@ public class PdfActivity extends BaseActivity<ActivityPdfBinding,PdfViewModel> {
                 Log.w("PdfActivity", "PDF dữ liệu trống hoặc null");
             }
         });
-
+        viewBinding.btnClose.setOnClickListener(v ->{
+            finish();
+        });
     }
     public static String toFileName(String input) {
         if (input == null) return "default";

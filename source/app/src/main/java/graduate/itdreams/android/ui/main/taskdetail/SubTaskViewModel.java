@@ -9,10 +9,12 @@ import java.util.List;
 import graduate.itdreams.android.MVVMApplication;
 import graduate.itdreams.android.data.Repository;
 import graduate.itdreams.android.data.model.api.request.task.CompleteTaskRequest;
+import graduate.itdreams.android.data.model.api.request.task.RestartTaskRequest;
 import graduate.itdreams.android.data.model.api.request.task.TaskQuestionProgressRequest;
 import graduate.itdreams.android.data.model.api.response.file.UploadResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionProgressResponse;
 import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
+import graduate.itdreams.android.data.model.api.response.task.ListAnswerResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskProgressResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.ui.base.fragment.BaseFragmentViewModel;
@@ -41,6 +43,8 @@ public class SubTaskViewModel extends BaseFragmentViewModel {
     public LiveData<List<TaskQuestionResponse>> getTaskQuestion() { return taskQuestionLiveData; }
     private final MutableLiveData<String> fileLiveData = new MutableLiveData<>();
     public LiveData<String> getFilePath() { return fileLiveData; }
+    private final MutableLiveData<List<ListAnswerResponse>> answerLiveData = new MutableLiveData<>();
+    public LiveData<List<ListAnswerResponse>> getAnswerList() { return answerLiveData; }
     public final MutableLiveData<Boolean> completeSuccess = new MutableLiveData<>(true);
 
     public SubTaskViewModel(Repository repository, MVVMApplication application) {
@@ -166,7 +170,36 @@ public class SubTaskViewModel extends BaseFragmentViewModel {
                         }));
 
     }
+    public void fetchListAnswer(Long studentSubTaskProgressId,Long taskId) {
+        showLoading();
+        compositeDisposable.add(repository.getApiService().getAnswerList(studentSubTaskProgressId, taskId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwable ->
+                        throwable.flatMap((Function<Throwable, ObservableSource<?>>) throwable1 -> {
+                            if (NetworkUtils.checkNetworkError(throwable1)) {
+                                hideLoading();
+                                return application.showDialogNoInternetAccess();
+                            } else {
+                                return Observable.error(throwable1);
+                            }
+                        })
+                )
+                .subscribe(
+                        response -> {
+                            hideLoading();
+                            answerLiveData.setValue(response.getData().getContent());
+                        }, throwable -> {
+                            hideLoading();
+                            Timber.e(throwable);
+                            if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
+                                HttpException httpException = (HttpException) throwable;
+                                if (httpException.code() == 400) {
+                                }
+                            }
+                        }));
 
+    }
     public void completeTask(CompleteTaskRequest request) {
         showLoading();
         compositeDisposable.add(repository.getApiService().completeTask(request)
@@ -200,7 +233,39 @@ public class SubTaskViewModel extends BaseFragmentViewModel {
                             }
                         }));
     }
+    public void restartTask(RestartTaskRequest request) {
+        showLoading();
+        compositeDisposable.add(repository.getApiService().restartQuestion(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwable ->
+                        throwable.flatMap((Function<Throwable, ObservableSource<?>>) throwable1 -> {
+                            if (NetworkUtils.checkNetworkError(throwable1)) {
+                                hideLoading();
+                                return application.showDialogNoInternetAccess();
+                            } else {
+                                return Observable.error(throwable1);
+                            }
+                        })
+                )
+                .subscribe(
+                        response -> {
+                            hideLoading();
+                            showNormalMessage("Hoàn thành nhiệm vụ");
+                            completeSuccess.setValue(true);
+                        }, throwable -> {
+                            hideLoading();
+                            Timber.e(throwable);
+                            completeSuccess.setValue(false);
 
+                            if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
+                                HttpException httpException = (HttpException) throwable;
+                                if (httpException.code() == 400) {
+
+                                }
+                            }
+                        }));
+    }
     public void submitQuestion(TaskQuestionProgressRequest request) {
         showLoading();
         compositeDisposable.add(repository.getApiService().submitQuestion(request)

@@ -5,8 +5,12 @@ import android.net.Uri;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -16,13 +20,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.davidea.flexibleadapter.databinding.BR;
 import graduate.itdreams.android.R;
 import graduate.itdreams.android.data.model.api.request.task.CompleteTaskRequest;
+import graduate.itdreams.android.data.model.api.request.task.RestartTaskRequest;
 import graduate.itdreams.android.data.model.api.request.task.TaskQuestionProgressRequest;
 import graduate.itdreams.android.data.model.api.response.ItemTitleContentResponse;
+import graduate.itdreams.android.data.model.api.response.question.TaskQuestionResponse;
+import graduate.itdreams.android.data.model.api.response.task.ListAnswerResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskProgressResponse;
 import graduate.itdreams.android.data.model.api.response.task.SubTaskResponse;
 import graduate.itdreams.android.databinding.FragmentSubTaskBinding;
@@ -37,8 +45,34 @@ public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTask
     private SubTaskProgressResponse subTaskProgress;
     private File file;
     private QuestionItemAdapter.UploadFileCallback currentUploadCallback;
-    public void loadSubTask(Long simulationId,SubTaskResponse subTask) {
-        viewModel.fetchSubtaskDetail(subTask.getId());
+    private List<TaskQuestionResponse> cachedQuestions;
+    private List<ListAnswerResponse> cachedAnswers;
+    private boolean questionLoaded = false;
+    private boolean answerLoaded = false;
+    private long simulationId;
+    private long subTaskId;
+    public static SubTaskFragment newInstance(Long simulationId,SubTaskResponse subTask) {
+        SubTaskFragment fragment = new SubTaskFragment();
+        Bundle args = new Bundle();
+        args.putLong("simulation_id", simulationId);
+        args.putLong("subtask_id", subTask.getId());
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    
+        Bundle args = getArguments();
+        if (args == null) {
+            throw new IllegalStateException("SubTaskFragment requires arguments but found null.");
+        }
+
+        simulationId = args.getLong("simulation_id", -1);
+        subTaskId = args.getLong("subtask_id", -1);
+
+        viewModel.fetchSubtaskDetail(subTaskId);
         viewModel.getSubTaskDetail().observe(getViewLifecycleOwner(), responseSubtaskDetail -> {
             if (responseSubtaskDetail != null) {
                 String introductionJson = responseSubtaskDetail.getIntroduction();
@@ -57,63 +91,94 @@ public class SubTaskFragment extends BaseFragment<FragmentSubTaskBinding,SubTask
                 }
             }
         });
-        viewModel.createSubtaskProgress(subTask.getId());
+        viewModel.createSubtaskProgress(subTaskId);
         viewModel.getSubTaskProgress().observe(getViewLifecycleOwner(), responseSubtaskProgress -> {
             subTaskProgress = responseSubtaskProgress;
-        });
-        viewModel.fetchListTaskQuestion(simulationId, subTask.getId());
-        viewModel.getTaskQuestion().observe(getViewLifecycleOwner(), responseTaskQuestion -> {
-            if(responseTaskQuestion != null){
-                if(responseTaskQuestion.get(0).getQuestionType() != 3){
-                    binding.layoutQuestionFileAndText.setVisibility(View.VISIBLE);
-                    binding.btnComplete.setVisibility(View.VISIBLE);
-                    binding.layoutQuestionQuiz.setVisibility(View.GONE);
-                    QuestionItemAdapter questionItemAdapter = new QuestionItemAdapter(responseTaskQuestion, (item, position, callback) -> {
-                        currentUploadCallback = callback;
-                        // Mở file picker ở đây
-                        filePickerLauncher.launch("application/pdf");
-                    }, (item, position, file) -> {
-                        if(item.getQuestionType() == 1){
-                            submitFileClick(responseTaskQuestion.get(position).getId(), file);
-                        }
-                    }, (item, position, answer) -> {
-                        if(item.getQuestionType() == 2){
-                            submitTextClick(responseTaskQuestion.get(position).getId(), answer);
-                        }
-                    });
-                    binding.rcvQuestionFileAndText.setLayoutManager(new LinearLayoutManager(requireContext()));
-                    binding.rcvQuestionFileAndText.setAdapter(questionItemAdapter);
-                }else {
-                    binding.layoutQuestionQuiz.setVisibility(View.VISIBLE);
-                    binding.btnComplete.setVisibility(View.VISIBLE);
-                    binding.layoutQuestionFileAndText.setVisibility(View.GONE);
-                    QuestionQuizAdapter adapter = new QuestionQuizAdapter(responseTaskQuestion, currentIndex, isCorrect -> {
-                        if(currentIndex + 1 == responseTaskQuestion.size()){
-                            binding.btnNext.setEnabled(false);
-                        }else {
-                            binding.btnNext.setEnabled(true);
-                        }
-                        submitQuizClick(responseTaskQuestion.get(currentIndex).getId(), isCorrect);
-                    });
-                    binding.rcvQuestionQuiz.setAdapter(adapter);
-                    binding.rcvQuestionQuiz.setLayoutManager(new LinearLayoutManager(requireContext()));
-                    binding.btnNext.setOnClickListener(v -> {
-                        if (currentIndex < responseTaskQuestion.size() - 1) {
-                            currentIndex++;
-                            adapter.setCurrentIndex(currentIndex);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
+            viewModel.fetchListTaskQuestion(simulationId, subTaskId);
 
-                }
-            }
+            viewModel.fetchListAnswer(responseSubtaskProgress.getId(), subTaskId);
         });
+
+        viewModel.getTaskQuestion().observe(getViewLifecycleOwner(), questions -> {
+            questionLoaded = true;
+            cachedQuestions = questions;
+            tryLoadUI();
+        });
+
+        viewModel.getAnswerList().observe(getViewLifecycleOwner(), answers -> {
+            answerLoaded = true;
+            cachedAnswers = answers;
+            tryLoadUI();
+        });
+
         binding.btnComplete.setOnClickListener(v -> {
             CompleteTaskRequest request = new CompleteTaskRequest();
-            request.setTaskId(subTask.getId());
+            request.setTaskId(subTaskId);
             viewModel.completeTask(request);
         });
+        binding.btnRestart.setOnClickListener(v -> {
+            RestartTaskRequest request = new RestartTaskRequest();
+            request.setTaskId(subTaskId);
+            viewModel.restartTask(request);
+        });
+    }
+    private void tryLoadUI() {
+        if (!questionLoaded || !answerLoaded) return;
 
+        if (cachedQuestions == null || cachedQuestions.isEmpty()) {
+            Log.e("SubTask", "TaskQuestion rỗng, không thể load UI");
+            return;
+        }
+
+        if (cachedAnswers == null) cachedAnswers = new ArrayList<>();
+
+        loadQuestion(cachedQuestions, cachedAnswers);
+    }
+
+
+    private void loadQuestion(List<TaskQuestionResponse> responseTaskQuestion, List<ListAnswerResponse> listAnswerResponses){
+        if(responseTaskQuestion.get(0).getQuestionType() != 3){
+            binding.layoutQuestionFileAndText.setVisibility(View.VISIBLE);
+            binding.btnComplete.setVisibility(View.VISIBLE);
+            binding.layoutQuestionQuiz.setVisibility(View.GONE);
+            QuestionItemAdapter questionItemAdapter = new QuestionItemAdapter(responseTaskQuestion, listAnswerResponses, (item, position, callback) -> {
+                currentUploadCallback = callback;
+                // Mở file picker ở đây
+                filePickerLauncher.launch("application/pdf");
+            }, (item, position, file) -> {
+                if(item.getQuestionType() == 1){
+                    submitFileClick(responseTaskQuestion.get(position).getId(), file);
+                }
+            }, (item, position, answer) -> {
+                if(item.getQuestionType() == 2){
+                    submitTextClick(responseTaskQuestion.get(position).getId(), answer);
+                }
+            });
+            binding.rcvQuestionFileAndText.setLayoutManager(new LinearLayoutManager(requireContext()));
+            binding.rcvQuestionFileAndText.setAdapter(questionItemAdapter);
+        }else {
+            binding.layoutQuestionQuiz.setVisibility(View.VISIBLE);
+            binding.btnComplete.setVisibility(View.VISIBLE);
+            binding.layoutQuestionFileAndText.setVisibility(View.GONE);
+            QuestionQuizAdapter adapter = new QuestionQuizAdapter(responseTaskQuestion, currentIndex, isCorrect -> {
+                if(currentIndex + 1 == responseTaskQuestion.size()){
+                    binding.btnNext.setEnabled(false);
+                }else {
+                    binding.btnNext.setEnabled(true);
+                }
+                submitQuizClick(responseTaskQuestion.get(currentIndex).getId(), isCorrect);
+            });
+            binding.rcvQuestionQuiz.setAdapter(adapter);
+            binding.rcvQuestionQuiz.setLayoutManager(new LinearLayoutManager(requireContext()));
+            binding.btnNext.setOnClickListener(v -> {
+                if (currentIndex < responseTaskQuestion.size() - 1) {
+                    currentIndex++;
+                    adapter.setCurrentIndex(currentIndex);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+        }
     }
     private void submitQuizClick(Long taskQuestionId, Boolean isCorrect){
         TaskQuestionProgressRequest request = new TaskQuestionProgressRequest();

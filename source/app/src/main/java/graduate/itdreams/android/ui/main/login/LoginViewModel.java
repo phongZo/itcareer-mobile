@@ -1,5 +1,7 @@
 package graduate.itdreams.android.ui.main.login;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import graduate.itdreams.android.data.model.api.request.login.GoogleLoginRequest;
@@ -76,9 +78,9 @@ public class LoginViewModel extends BaseViewModel {
                 .subscribe(
                         response -> {
                             hideLoading();
-                            repository.getSharedPreferences().setToken(response.getAccess_token());
-                            repository.getSharedPreferences().saveAccessTokenObject(response);
+                            repository.getSharedPreferences().setToken(response.getData());
                             loginSuccess.setValue(true);
+
                             showNormalMessage(getApplication().getString(R.string.login_success));
 
                         }, throwable -> {
@@ -89,6 +91,7 @@ public class LoginViewModel extends BaseViewModel {
                                 if (httpException.code() == 400) {
                                 }
                             }
+                            Log.e("API_ERROR", "Google Login Error", throwable);
                             showNormalMessage(getApplication().getString(R.string.login_un_success));
                         }));
     }
